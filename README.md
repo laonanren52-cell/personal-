@@ -35,6 +35,24 @@ npm run build
 
 构建完成后会生成 `dist/` 目录。腾讯云静态网站、COS 静态托管、CloudBase 静态托管或 Nginx 都应该部署 `dist/` 目录里的内容，而不是部署项目根目录。
 
+### 一键检查并修复腾讯云服务器
+
+在腾讯云服务器上执行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/laonanren52-cell/personal-/main/deploy/tencent-cloud-fix.sh -o tencent-cloud-fix.sh
+chmod +x tencent-cloud-fix.sh
+./tencent-cloud-fix.sh
+```
+
+如果项目实际目录不是 `/var/www/personal-`，用 `APP_DIR` 指定真实路径：
+
+```bash
+APP_DIR=/你的真实项目路径 ./tencent-cloud-fix.sh
+```
+
+脚本会自动检查 `pwd`、`ls -la`、`package.json`、`dist/index.html`，必要时执行 `npm install` 和 `npm run build`，并把 Nginx `root` 写到真实的 `dist` 绝对路径，然后执行 `sudo nginx -t`、`sudo systemctl reload nginx`、`curl -I http://127.0.0.1`。
+
 ### 方式一：用 serve 快速部署
 
 适合先验证公网能否打开：
