@@ -22,6 +22,41 @@ npx expo start
 
 然后使用 Expo Go 扫码，或在模拟器中打开。
 
+## 部署到腾讯云网页
+
+这个项目是 Expo App，不能直接把源码目录上传成网页。需要先构建 Web 静态文件：
+
+```bash
+npm install
+npm run build:web
+```
+
+构建完成后会生成 `dist/` 目录。腾讯云静态网站、COS 静态托管、CloudBase 静态托管或 Nginx 都应该部署 `dist/` 目录里的内容，而不是部署项目根目录。
+
+如果使用 Nginx，推荐配置：
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    root /var/www/ai-priority/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+常见打不开原因：
+
+- 上传了源码目录，没有上传 `dist/`。
+- 服务器只运行了 `npm install`，但没有执行 `npm run build:web`。
+- Nginx `root` 指到了项目根目录，而不是 `dist`。
+- 直接访问二级路由时没有 `try_files ... /index.html`，导致刷新或打开子页面 404。
+- 安全组或防火墙没有开放 80/443 端口。
+
 ## 功能
 
 - 首页任务看板：按 AI 评分排序，展示今日数量、3 天内高优先级数量、最近截止任务和 AI 今日建议。
