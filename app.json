@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "AI轻重缓急日程助手",
+    "slug": "ai-priority-schedule-assistant",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "aipriority",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.demo.aipriorityschedule"
+    },
+    "android": {
+      "package": "com.demo.aipriorityschedule",
+      "adaptiveIcon": {
+        "backgroundColor": "#090B14"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "用于从课表、作业截图或比赛通知中识别待办任务。",
+          "cameraPermission": "用于拍照识别纸质通知、白板或课堂任务。"
+        }
+      ],
+      "expo-notifications"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
