@@ -17,45 +17,103 @@
 
 ```bash
 npm install
-npx expo start
+npm run dev
 ```
 
 然后使用 Expo Go 扫码，或在模拟器中打开。
 
 ## 部署到腾讯云网页
 
-这个项目是 Expo App，不能直接把源码目录上传成网页。需要先构建 Web 静态文件：
+这个项目是 Expo Router / React Native Web 项目，不是 Vite 项目。源码目录里不会有根级 `index.html`，`index.html` 会在构建后生成到 `dist/`。
+
+不能直接把源码目录上传成网页。需要先构建 Web 静态文件：
 
 ```bash
 npm install
-npm run build:web
+npm run build
 ```
 
 构建完成后会生成 `dist/` 目录。腾讯云静态网站、COS 静态托管、CloudBase 静态托管或 Nginx 都应该部署 `dist/` 目录里的内容，而不是部署项目根目录。
 
-如果使用 Nginx，推荐配置：
+### 方式一：用 serve 快速部署
+
+适合先验证公网能否打开：
+
+```bash
+git clone https://github.com/laonanren52-cell/personal-.git
+cd personal-
+npm install
+npm run build
+npm run preview
+```
+
+`npm run preview` 会监听 `0.0.0.0:3000`，不是只监听 `localhost`。腾讯云安全组需要放行 TCP `3000`，然后访问：
+
+```text
+http://你的公网IP:3000
+```
+
+如需后台运行：
+
+```bash
+npm install -g pm2
+pm2 start "npm run preview" --name personal-ai-schedule
+pm2 save
+```
+
+### 方式二：用 Nginx 部署到 80 端口
+
+推荐生产环境使用：
+
+```bash
+sudo mkdir -p /var/www
+cd /var/www
+sudo git clone https://github.com/laonanren52-cell/personal-.git
+cd personal-
+sudo npm install
+sudo npm run build
+```
+
+Nginx 配置可直接使用仓库中的 `deploy/tencent-nginx.conf`：
 
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name _;
 
-    root /var/www/ai-priority/dist;
+    root /var/www/personal-/dist;
     index index.html;
 
     location / {
         try_files $uri $uri/ /index.html;
     }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2)$ {
+        try_files $uri =404;
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
 }
 ```
+
+启用 Nginx 配置：
+
+```bash
+sudo cp /var/www/personal-/deploy/tencent-nginx.conf /etc/nginx/conf.d/personal-.conf
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+腾讯云安全组需要放行 TCP `80`。如果配置 HTTPS，还需要放行 TCP `443`。
 
 常见打不开原因：
 
 - 上传了源码目录，没有上传 `dist/`。
-- 服务器只运行了 `npm install`，但没有执行 `npm run build:web`。
+- 服务器只运行了 `npm install`，但没有执行 `npm run build`。
 - Nginx `root` 指到了项目根目录，而不是 `dist`。
 - 直接访问二级路由时没有 `try_files ... /index.html`，导致刷新或打开子页面 404。
-- 安全组或防火墙没有开放 80/443 端口。
+- 用 `serve` 时只监听了 `localhost`，公网访问不到。本项目的 `npm run preview` 已配置为 `0.0.0.0:3000`。
+- 腾讯云安全组或服务器防火墙没有开放 `80`、`443`、`3000`、`5173` 等实际使用端口。生产建议只开放 `80/443`。
 
 ## 功能
 
