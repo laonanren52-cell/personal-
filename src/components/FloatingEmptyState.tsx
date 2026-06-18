@@ -49,7 +49,7 @@ export function FloatingEmptyState({ onAction }: Props) {
         ]}
       >
         <LinearGradient colors={gradients.primaryButton} style={styles.iconCircle}>
-          <Ionicons name="sparkles-outline" size={38} color={colors.text} />
+          <Ionicons name="sparkles-outline" size={38} color={colors.white} />
         </LinearGradient>
       </Animated.View>
       <Text style={styles.emptyTitle}>今天还没有压力</Text>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 47,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(70,216,255,0.12)",
+    backgroundColor: "rgba(34,199,217,0.10)",
     marginBottom: 18,
     ...shadow.cyan
   },

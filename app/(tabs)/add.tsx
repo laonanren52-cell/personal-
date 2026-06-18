@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: "rgba(7,9,20,0.35)",
+    backgroundColor: "rgba(255,255,255,0.62)",
     marginBottom: 16
   },
   switchText: {
@@ -257,12 +257,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 6,
     borderRadius: 22,
-    backgroundColor: "rgba(7,9,20,0.32)"
+    backgroundColor: "rgba(221,231,255,0.42)"
   },
   footer: {
     marginTop: 2,
     marginBottom: 8,
     borderRadius: 22,
-    backgroundColor: "rgba(7,9,20,0.2)"
+    backgroundColor: "rgba(255,255,255,0.48)"
   }
 });

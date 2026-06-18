@@ -1,32 +1,45 @@
 import { TaskCategory, PriorityLevel } from "@/types/task";
 
 export const colors = {
-  background: "#070914",
-  backgroundDeep: "#040611",
-  panel: "rgba(20, 25, 43, 0.76)",
-  panelStrong: "#111827",
-  panelSoft: "rgba(255,255,255,0.065)",
-  border: "rgba(255,255,255,0.12)",
-  borderStrong: "rgba(255,255,255,0.20)",
-  text: "#F7F8FF",
-  muted: "#9AA5C1",
-  dim: "#65708D",
-  primary: "#8B7CFF",
-  cyan: "#46D8FF",
-  green: "#60E6A8",
-  yellow: "#FFD166",
-  red: "#FF5C7A",
-  blue: "#4B8CFF"
+  pageBg: "#F6F8FF",
+  pageBg2: "#EEF4FF",
+  pageBg3: "#FAF7FF",
+  background: "#F6F8FF",
+  backgroundDeep: "#EEF4FF",
+  panel: "rgba(255,255,255,0.72)",
+  panelStrong: "rgba(255,255,255,0.9)",
+  panelSoft: "rgba(255,255,255,0.58)",
+  cardBg: "rgba(255,255,255,0.72)",
+  cardBgStrong: "rgba(255,255,255,0.9)",
+  border: "rgba(120,140,180,0.18)",
+  borderStrong: "rgba(120,140,180,0.24)",
+  text: "#172033",
+  textPrimary: "#172033",
+  muted: "#64748B",
+  textSecondary: "#64748B",
+  dim: "#94A3B8",
+  textMuted: "#94A3B8",
+  primary: "#4F7CFF",
+  primarySoft: "#DDE7FF",
+  secondary: "#8B7CFF",
+  cyan: "#22C7D9",
+  green: "#22C55E",
+  yellow: "#F59E0B",
+  red: "#EF4444",
+  blue: "#4F7CFF",
+  info: "#4F7CFF",
+  white: "#FFFFFF"
 };
 
 export const gradients = {
-  screen: ["#050713", "#10152A", "#070914"] as const,
-  hero: ["rgba(139,124,255,0.44)", "rgba(70,216,255,0.18)", "rgba(7,9,20,0.45)"] as const,
-  card: ["rgba(255,255,255,0.13)", "rgba(255,255,255,0.045)"] as const,
-  cardDim: ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.025)"] as const,
-  cyanGlass: ["rgba(70,216,255,0.18)", "rgba(70,216,255,0.055)"] as const,
-  primaryButton: ["#8B7CFF", "#46D8FF"] as const,
-  danger: ["rgba(255,92,122,0.28)", "rgba(255,92,122,0.08)"] as const
+  screen: ["#F7FAFF", "#EEF4FF", "#FAF7FF"] as const,
+  hero: ["rgba(255,255,255,0.88)", "rgba(221,231,255,0.78)", "rgba(250,247,255,0.86)"] as const,
+  card: ["rgba(255,255,255,0.84)", "rgba(255,255,255,0.64)"] as const,
+  cardDim: ["rgba(255,255,255,0.62)", "rgba(245,248,255,0.46)"] as const,
+  cyanGlass: ["rgba(79,124,255,0.10)", "rgba(34,199,217,0.07)"] as const,
+  primaryButton: ["#4F7CFF", "#8B7CFF"] as const,
+  softAurora: ["rgba(79,124,255,0.16)", "rgba(139,124,255,0.12)", "rgba(34,199,217,0.08)"] as const,
+  danger: ["rgba(239,68,68,0.12)", "rgba(255,255,255,0.68)"] as const
 };
 
 export const radius = {
@@ -49,21 +62,21 @@ export const spacing = {
 export const shadow = {
   glow: {
     shadowColor: colors.primary,
-    shadowOpacity: 0.28,
-    shadowRadius: 24,
-    elevation: 14
+    shadowOpacity: 0.12,
+    shadowRadius: 22,
+    elevation: 8
   },
   cyan: {
     shadowColor: colors.cyan,
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.12,
     shadowRadius: 18,
-    elevation: 10
+    elevation: 7
   },
   danger: {
     shadowColor: colors.red,
-    shadowOpacity: 0.24,
+    shadowOpacity: 0.14,
     shadowRadius: 18,
-    elevation: 10
+    elevation: 7
   }
 };
 
@@ -123,7 +136,7 @@ export const priorityColors: Record<PriorityLevel, string> = {
 };
 
 export const priorityGlowColors: Record<PriorityLevel, string> = {
-  high: "rgba(255,92,122,0.34)",
-  medium: "rgba(255,209,102,0.28)",
-  low: "rgba(96,230,168,0.24)"
+  high: "rgba(239,68,68,0.14)",
+  medium: "rgba(245,158,11,0.14)",
+  low: "rgba(34,197,94,0.12)"
 };

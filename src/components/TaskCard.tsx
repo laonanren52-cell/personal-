@@ -64,7 +64,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
             styles.pulseGlow,
             {
               backgroundColor: priorityGlowColors.high,
-              opacity: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.22, 0.58] }),
+              opacity: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.12, 0.32] }),
               transform: [{ scale: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.95, 1.05] }) }]
             }
           ]}
@@ -76,7 +76,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
       <View style={styles.header}>
         <Animated.View style={{ transform: [{ scale: checkScale }] }}>
           <Pressable style={[styles.check, task.completed && styles.checked]} onPress={toggle}>
-            {task.completed ? <Ionicons name="checkmark" size={16} color={colors.background} /> : null}
+            {task.completed ? <Ionicons name="checkmark" size={16} color={colors.white} /> : null}
           </Pressable>
         </Animated.View>
 
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     width: 4,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
-    shadowOpacity: 0.65,
-    shadowRadius: 12
+    shadowOpacity: 0.24,
+    shadowRadius: 10
   },
   header: {
     flexDirection: "row",
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 2,
-    backgroundColor: "rgba(255,255,255,0.055)"
+    backgroundColor: "rgba(255,255,255,0.72)"
   },
   checked: {
     backgroundColor: colors.green,
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.045)"
+    backgroundColor: "rgba(255,255,255,0.62)"
   },
   metaRow: {
     flexDirection: "row",
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: "rgba(7,9,20,0.3)"
+    backgroundColor: "rgba(255,255,255,0.66)"
   },
   deadlineText: {
     fontSize: 11,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: "rgba(255,255,255,0.08)"
+    backgroundColor: "rgba(221,231,255,0.52)"
   },
   quadrantText: {
     color: colors.text,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "rgba(70,216,255,0.18)"
+    borderColor: "rgba(79,124,255,0.16)"
   },
   sparkBox: {
     width: 26,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(70,216,255,0.12)"
+    backgroundColor: "rgba(34,199,217,0.10)"
   },
   advice: {
     flex: 1,

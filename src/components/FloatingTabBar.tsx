@@ -16,8 +16,8 @@ const iconMap = {
 export function FloatingTabBar({ state, descriptors, navigation }: any) {
   return (
     <View pointerEvents="box-none" style={styles.wrap}>
-      <BlurView intensity={34} tint="dark" style={styles.blur}>
-        <LinearGradient colors={["rgba(255,255,255,0.16)", "rgba(255,255,255,0.055)"]} style={styles.bar}>
+      <BlurView intensity={38} tint="light" style={styles.blur}>
+        <LinearGradient colors={["rgba(255,255,255,0.88)", "rgba(255,255,255,0.68)"]} style={styles.bar}>
           {state.routes.map((route: { key: string; name: string; params?: object }, index: number) => {
             const descriptor = descriptors[route.key];
             const options = descriptor.options;
@@ -86,7 +86,7 @@ function TabItem({
         {focused ? (
           <LinearGradient colors={gradients.primaryButton} style={styles.activeFill} />
         ) : null}
-        <Ionicons name={iconName} size={19} color={focused ? colors.text : colors.muted} />
+        <Ionicons name={iconName} size={19} color={focused ? colors.white : colors.textMuted} />
         <Text style={[styles.label, focused && styles.labelActive]} numberOfLines={1}>
           {label}
         </Text>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderWidth: 1,
     borderColor: colors.borderStrong,
-    backgroundColor: "rgba(8, 11, 24, 0.72)",
+    backgroundColor: "rgba(255,255,255,0.82)",
     ...shadow.glow
   },
   bar: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   itemActive: {
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.24)"
+    borderColor: "rgba(255,255,255,0.74)"
   },
   activeFill: {
     position: "absolute",
@@ -148,12 +148,12 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   label: {
-    color: colors.muted,
+    color: colors.textMuted,
     fontSize: 10,
     fontWeight: "800",
     letterSpacing: 0
   },
   labelActive: {
-    color: colors.text
+    color: colors.white
   }
 });

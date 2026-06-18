@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.09)",
+    backgroundColor: "rgba(255,255,255,0.72)",
     borderWidth: 1,
     borderColor: colors.border
   },
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 85,
     right: -56,
     top: -48,
-    backgroundColor: "rgba(70,216,255,0.20)"
+    backgroundColor: "rgba(79,124,255,0.13)"
   },
   heroTop: {
     flexDirection: "row",
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(7,9,20,0.42)"
+    backgroundColor: "rgba(255,255,255,0.72)"
   },
   pressureNumber: {
     fontSize: 24,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   pressureTrack: {
     height: 8,
     borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.10)",
+    backgroundColor: "rgba(215,226,255,0.82)",
     overflow: "hidden",
     marginTop: 18
   },
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     padding: 13,
-    backgroundColor: "rgba(7,9,20,0.34)"
+    backgroundColor: "rgba(255,255,255,0.62)"
   },
   metricDot: {
     width: 8,
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     padding: 14,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: "rgba(7,9,20,0.34)"
+    backgroundColor: "rgba(255,255,255,0.62)"
   },
   nearestLabel: {
     color: colors.muted,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     gap: 9,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "rgba(70,216,255,0.18)",
+    borderColor: "rgba(79,124,255,0.16)",
     padding: 12,
     marginTop: 14
   },
@@ -337,12 +337,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: radius.pill,
-    backgroundColor: "rgba(255,255,255,0.06)",
+    backgroundColor: "rgba(255,255,255,0.62)",
     borderWidth: 1,
     borderColor: colors.border
   },
   activeFilter: {
-    backgroundColor: "rgba(139,124,255,0.24)",
+    backgroundColor: "rgba(221,231,255,0.66)",
     borderColor: colors.primary,
     ...shadow.glow
   },

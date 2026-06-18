@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { PropsWithChildren } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors } from "@/constants/theme";
+import { colors, gradients } from "@/constants/theme";
 
 type Props = PropsWithChildren<{
   scroll?: boolean;
@@ -11,7 +11,7 @@ type Props = PropsWithChildren<{
 export function GlassScreen({ children, scroll = true }: Props) {
   const content = <View style={styles.content}>{children}</View>;
   return (
-    <LinearGradient colors={["#060712", "#10152A", "#070914"]} style={styles.root}>
+    <LinearGradient colors={gradients.screen} style={styles.root}>
       <View style={styles.orbOne} />
       <View style={styles.orbTwo} />
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     width: 240,
     height: 240,
     borderRadius: 120,
-    backgroundColor: "rgba(102, 91, 255, 0.18)",
+    backgroundColor: "rgba(79,124,255,0.14)",
     top: -70,
     right: -80
   },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     borderRadius: 90,
-    backgroundColor: "rgba(70, 216, 255, 0.13)",
+    backgroundColor: "rgba(34,199,217,0.10)",
     top: 170,
     left: -90
   }

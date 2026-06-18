@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: "rgba(7,9,20,0.35)",
+    backgroundColor: "rgba(255,255,255,0.62)",
     marginBottom: 16
   },
   switchText: {

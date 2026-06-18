@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "aipriority",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "assetBundlePatterns": [
       "**/*"
@@ -17,7 +17,7 @@
     "android": {
       "package": "com.demo.aipriorityschedule",
       "adaptiveIcon": {
-        "backgroundColor": "#090B14"
+        "backgroundColor": "#F6F8FF"
       }
     },
     "plugins": [

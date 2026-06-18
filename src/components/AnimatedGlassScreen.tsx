@@ -40,7 +40,7 @@ export function AnimatedGlassScreen({ children, scroll = true }: Props) {
         ])
       );
 
-    const loops = [makeLoop(driftA, 7200), makeLoop(driftB, 8800), makeLoop(driftC, 10400)];
+    const loops = [makeLoop(driftA, 9200), makeLoop(driftB, 10800), makeLoop(driftC, 12400)];
     loops.forEach((loop) => loop.start());
     return () => loops.forEach((loop) => loop.stop());
   }, [driftA, driftB, driftC, page]);
@@ -73,7 +73,7 @@ export function AnimatedGlassScreen({ children, scroll = true }: Props) {
           styles.orb,
           styles.orbOne,
           {
-            opacity: driftA.interpolate({ inputRange: [0, 1], outputRange: [0.18, 0.32] }),
+            opacity: driftA.interpolate({ inputRange: [0, 1], outputRange: [0.34, 0.58] }),
             transform: [
               { translateX: driftA.interpolate({ inputRange: [0, 1], outputRange: [0, -26] }) },
               { translateY: driftA.interpolate({ inputRange: [0, 1], outputRange: [0, 22] }) },
@@ -87,7 +87,7 @@ export function AnimatedGlassScreen({ children, scroll = true }: Props) {
           styles.orb,
           styles.orbTwo,
           {
-            opacity: driftB.interpolate({ inputRange: [0, 1], outputRange: [0.12, 0.26] }),
+            opacity: driftB.interpolate({ inputRange: [0, 1], outputRange: [0.24, 0.42] }),
             transform: [
               { translateX: driftB.interpolate({ inputRange: [0, 1], outputRange: [0, 28] }) },
               { translateY: driftB.interpolate({ inputRange: [0, 1], outputRange: [0, -18] }) },
@@ -101,7 +101,7 @@ export function AnimatedGlassScreen({ children, scroll = true }: Props) {
           styles.orb,
           styles.orbThree,
           {
-            opacity: driftC.interpolate({ inputRange: [0, 1], outputRange: [0.09, 0.2] }),
+            opacity: driftC.interpolate({ inputRange: [0, 1], outputRange: [0.18, 0.32] }),
             transform: [
               { translateX: driftC.interpolate({ inputRange: [0, 1], outputRange: [0, -18] }) },
               { translateY: driftC.interpolate({ inputRange: [0, 1], outputRange: [0, -24] }) },
@@ -152,21 +152,21 @@ const styles = StyleSheet.create({
     height: 260,
     top: -82,
     right: -92,
-    backgroundColor: "rgba(139,124,255,0.7)"
+    backgroundColor: "rgba(79,124,255,0.18)"
   },
   orbTwo: {
     width: 220,
     height: 220,
     top: 184,
     left: -118,
-    backgroundColor: "rgba(70,216,255,0.62)"
+    backgroundColor: "rgba(139,124,255,0.14)"
   },
   orbThree: {
     width: 190,
     height: 190,
     bottom: 120,
     right: -84,
-    backgroundColor: "rgba(96,230,168,0.34)"
+    backgroundColor: "rgba(34,199,217,0.12)"
   },
   vignette: {
     position: "absolute",
@@ -174,6 +174,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: "rgba(3,5,13,0.18)"
+    backgroundColor: "rgba(255,255,255,0.08)"
   }
 });

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(70,216,255,0.12)"
+    backgroundColor: "rgba(34,199,217,0.10)"
   },
   summaryText: {
     flex: 1
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     top: 14,
     bottom: 26,
     width: 2,
-    backgroundColor: "rgba(139,124,255,0.24)"
+    backgroundColor: "rgba(215,226,255,0.9)"
   },
   timelineSection: {
     flexDirection: "row",
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.28)"
+    borderColor: "rgba(120,140,180,0.22)"
   },
   slot: {
     color: colors.text,

@@ -151,7 +151,7 @@ function ActionButton({
   return (
     <Pressable onPress={onPress} disabled={disabled} style={disabled && styles.disabled}>
       <LinearGradient colors={gradients.primaryButton} style={styles.actionButton}>
-        <Ionicons name={icon} size={20} color={colors.text} />
+        <Ionicons name={icon} size={20} color={colors.white} />
         <Text style={styles.actionText}>{label}</Text>
       </LinearGradient>
     </Pressable>
@@ -184,10 +184,10 @@ const styles = StyleSheet.create({
     height: 190,
     borderRadius: radius.xl,
     borderWidth: 1,
-    borderColor: "rgba(70,216,255,0.28)",
+    borderColor: "rgba(34,199,217,0.20)",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(7,9,20,0.40)",
+    backgroundColor: "rgba(255,255,255,0.58)",
     overflow: "hidden",
     marginBottom: 18
   },
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     width: 170,
     height: 170,
     borderRadius: 85,
-    backgroundColor: "rgba(70,216,255,0.16)"
+    backgroundColor: "rgba(34,199,217,0.12)"
   },
   scanLine: {
     position: "absolute",
@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: colors.cyan,
     shadowColor: colors.cyan,
-    shadowOpacity: 0.9,
-    shadowRadius: 14
+    shadowOpacity: 0.32,
+    shadowRadius: 9
   },
   scanTitle: {
     color: colors.text,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: radius.pill,
-    backgroundColor: "rgba(255,255,255,0.07)"
+    backgroundColor: "rgba(255,255,255,0.62)"
   },
   statusDot: {
     width: 6,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     ...shadow.glow
   },
   actionText: {
-    color: colors.text,
+    color: colors.white,
     fontSize: 15,
     fontWeight: "900"
   },

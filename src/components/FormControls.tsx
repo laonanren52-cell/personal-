@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.07)",
+    backgroundColor: "rgba(255,255,255,0.72)",
     color: colors.text,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -99,10 +99,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.05)"
+    backgroundColor: "rgba(255,255,255,0.62)"
   },
   activeChip: {
-    backgroundColor: "rgba(139,124,255,0.23)",
+    backgroundColor: "rgba(221,231,255,0.86)",
     borderColor: colors.primary
   },
   chipText: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0
   },
   activeChipText: {
-    color: colors.text
+    color: colors.primary
   },
   button: {
     minHeight: 54,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     opacity: 0.55
   },
   buttonText: {
-    color: colors.text,
+    color: colors.white,
     fontSize: 15,
     fontWeight: "900",
     letterSpacing: 0
