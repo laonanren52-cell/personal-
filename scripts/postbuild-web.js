@@ -20,7 +20,17 @@ if (!fs.existsSync(indexPath)) {
 }
 
 fs.copyFileSync(indexPath, notFoundPath);
-fs.writeFileSync(redirectsPath, "/* /index.html 200\n", "utf8");
+fs.writeFileSync(
+  redirectsPath,
+  [
+    "/_expo/* /_expo/:splat 200",
+    "/assets/* /assets/:splat 200",
+    "/favicon.ico /favicon.ico 200",
+    "/* /index.html 200",
+    ""
+  ].join("\n"),
+  "utf8"
+);
 
 console.log("[postbuild-web] verified dist/index.html");
 console.log("[postbuild-web] wrote dist/404.html");
