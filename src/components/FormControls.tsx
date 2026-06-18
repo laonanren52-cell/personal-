@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { PropsWithChildren, useRef } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { Animated, Pressable, StyleSheet, Text, TextInput, TextInputProps, View } from "react-native";
 import { colors, gradients, radius, shadow } from "@/constants/theme";
 
@@ -8,13 +8,23 @@ type FieldProps = TextInputProps & {
 };
 
 export function Field({ label, style, ...props }: FieldProps) {
+  const [focused, setFocused] = useState(false);
+
   return (
     <View style={styles.fieldWrap}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         placeholderTextColor={colors.dim}
-        style={[styles.input, style]}
+        style={[styles.input, focused && styles.inputFocused, style]}
         {...props}
+        onFocus={(event) => {
+          setFocused(true);
+          props.onFocus?.(event);
+        }}
+        onBlur={(event) => {
+          setFocused(false);
+          props.onBlur?.(event);
+        }}
       />
     </View>
   );
@@ -28,10 +38,27 @@ export function Chip({
   active?: boolean;
   onPress: () => void;
 }>) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const animateTo = (toValue: number) => {
+    Animated.spring(scale, {
+      toValue,
+      friction: 7,
+      tension: 180,
+      useNativeDriver: true
+    }).start();
+  };
+
   return (
-    <Pressable style={[styles.chip, active && styles.activeChip]} onPress={onPress}>
-      <Text style={[styles.chipText, active && styles.activeChipText]}>{children}</Text>
-    </Pressable>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        style={[styles.chip, active && styles.activeChip]}
+        onPress={onPress}
+        onPressIn={() => animateTo(0.98)}
+        onPressOut={() => animateTo(1)}
+      >
+        <Text style={[styles.chipText, active && styles.activeChipText]}>{children}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 
@@ -92,6 +119,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 15,
     letterSpacing: 0
+  },
+  inputFocused: {
+    borderColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.12,
+    shadowRadius: 12
   },
   chip: {
     paddingHorizontal: 13,
