@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText } from "@/components/Typography";
 import { colors, gradients, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
@@ -21,7 +22,8 @@ export default function PlannerScreen() {
 
   return (
     <AnimatedGlassScreen>
-      <MutedText>AI 规划</MutedText>
+      <MobilePageContainer>
+      <MutedText>序光规划</MutedText>
       <Text style={styles.title}>今日作战计划</Text>
 
       <AnimatedCard delay={80} colorsOverride={gradients.hero} contentStyle={styles.summary}>
@@ -57,6 +59,7 @@ export default function PlannerScreen() {
           </View>
         ))}
       </View>
+      </MobilePageContainer>
     </AnimatedGlassScreen>
   );
 }

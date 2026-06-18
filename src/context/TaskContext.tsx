@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 import { Alert } from "react-native";
 import { analyzeTaskPriority, analyzeTaskPriorityWithAI, refreshTaskAnalysis } from "@/services/priority";
 import { cancelAllTaskNotifications, cancelTaskNotifications, scheduleTaskNotifications } from "@/services/notifications";
-import { defaultSettings, loadSettings, loadTasks, saveSettings, saveTasks } from "@/services/storage";
+import { clearStoredTasks, defaultSettings, loadSettings, loadTasks, saveSettings, saveTasks } from "@/services/storage";
 import { AppSettings, ImportTaskDraft, Task, TaskDraft } from "@/types/task";
 
 type TaskContextValue = {
@@ -112,8 +112,10 @@ export function TaskProvider({ children }: PropsWithChildren) {
 
   const clearTasks = useCallback(async () => {
     await cancelAllTaskNotifications(tasks);
-    await persistTasks([]);
-  }, [persistTasks, tasks]);
+    setTasks([]);
+    setImportDrafts([]);
+    await clearStoredTasks();
+  }, [tasks]);
 
   const updateSettings = useCallback(async (next: AppSettings) => {
     setSettings(next);

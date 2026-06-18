@@ -52,8 +52,8 @@ export function FloatingEmptyState({ onAction }: Props) {
           <Ionicons name="sparkles-outline" size={38} color={colors.white} />
         </LinearGradient>
       </Animated.View>
-      <Text style={styles.emptyTitle}>今天还没有压力</Text>
-      <MutedText style={styles.emptyCopy}>添加任务后，AI 会自动帮你排出轻重缓急</MutedText>
+      <Text style={styles.emptyTitle}>还没有任务</Text>
+      <MutedText style={styles.emptyCopy}>添加任务后，序光会自动帮你安排优先级</MutedText>
       <View style={styles.actionWrap}>
         <PrimaryButton onPress={onAction}>立即添加任务</PrimaryButton>
       </View>

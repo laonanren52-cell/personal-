@@ -26,6 +26,10 @@ export async function saveTasks(tasks: Task[]) {
   await AsyncStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
 }
 
+export async function clearStoredTasks() {
+  await AsyncStorage.removeItem(TASKS_KEY);
+}
+
 export async function loadSettings() {
   const raw = await AsyncStorage.getItem(SETTINGS_KEY);
   if (!raw) {

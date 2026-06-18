@@ -6,11 +6,11 @@ import { Animated, Platform, Pressable, StyleSheet, Text, View } from "react-nat
 import { colors, gradients, radius, shadow } from "@/constants/theme";
 
 const iconMap = {
-  index: "grid-outline",
+  index: "checkmark-done-circle-outline",
   add: "add-circle-outline",
-  import: "scan-outline",
-  planner: "sparkles-outline",
-  settings: "settings-outline"
+  import: "scan-circle-outline",
+  planner: "git-branch-outline",
+  settings: "options-outline"
 } as const;
 
 export function FloatingTabBar({ state, descriptors, navigation }: any) {
@@ -86,7 +86,7 @@ function TabItem({
         {focused ? (
           <LinearGradient colors={gradients.primaryButton} style={styles.activeFill} />
         ) : null}
-        <Ionicons name={iconName} size={19} color={focused ? colors.white : colors.textMuted} />
+        <Ionicons name={iconName} size={21} color={focused ? colors.white : colors.primary} />
         <Text style={[styles.label, focused && styles.labelActive]} numberOfLines={1}>
           {label}
         </Text>
@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 2,
     paddingHorizontal: 10,
-    overflow: "hidden"
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.40)"
   },
   itemActive: {
     borderWidth: 1,

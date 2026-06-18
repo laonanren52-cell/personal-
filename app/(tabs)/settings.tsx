@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { BrandMark } from "@/components/BrandMark";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
+import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText, PageTitle, SectionTitle } from "@/components/Typography";
 import { colors, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
@@ -19,6 +21,7 @@ export default function SettingsScreen() {
   const [apiKey, setApiKey] = useState(settings.apiKey);
   const [aiEnabled, setAiEnabled] = useState(settings.aiEnabled);
   const [defaultOffsets, setDefaultOffsets] = useState(settings.defaultReminderOffsets);
+  const [clearing, setClearing] = useState(false);
 
   const toggleOffset = (value: number) => {
     setDefaultOffsets((current) =>
@@ -35,10 +38,32 @@ export default function SettingsScreen() {
     Alert.alert("已保存", "设置已存入本地设备。");
   };
 
+  const confirmClearTasks = () => {
+    Alert.alert("确认清空全部任务？", "此操作不可恢复，将删除所有任务数据。", [
+      { text: "取消", style: "cancel" },
+      {
+        text: "确认清空",
+        style: "destructive",
+        onPress: async () => {
+          setClearing(true);
+          try {
+            await clearTasks();
+            Alert.alert("已清空全部任务");
+          } catch (error) {
+            Alert.alert("清空失败", error instanceof Error ? error.message : "请稍后再试");
+          } finally {
+            setClearing(false);
+          }
+        }
+      }
+    ]);
+  };
+
   return (
     <AnimatedGlassScreen>
-      <MutedText>设置</MutedText>
-      <PageTitle>真实 AI 与提醒偏好</PageTitle>
+      <MobilePageContainer>
+      <BrandMark showName subtitle="让每件事都有轻重先后" />
+      <PageTitle style={styles.pageTitle}>真实 AI 与提醒偏好</PageTitle>
 
       <AnimatedCard delay={80} contentStyle={styles.panel}>
         <Field
@@ -57,8 +82,8 @@ export default function SettingsScreen() {
           <Switch
             value={aiEnabled}
             onValueChange={setAiEnabled}
-            trackColor={{ true: colors.primary, false: "rgba(255,255,255,0.16)" }}
-            thumbColor={colors.text}
+            trackColor={{ true: colors.primary, false: "rgba(148,163,184,0.24)" }}
+            thumbColor={colors.white}
           />
         </View>
 
@@ -76,37 +101,37 @@ export default function SettingsScreen() {
 
       <AnimatedCard delay={160} contentStyle={styles.about}>
         <View style={styles.aboutIcon}>
-          <Ionicons name="information-circle-outline" size={24} color={colors.cyan} />
+          <BrandMark size={28} />
         </View>
         <View style={styles.aboutText}>
-          <Text style={styles.aboutTitle}>App 说明</Text>
+          <Text style={styles.aboutTitle}>关于序光</Text>
           <MutedText>
-            这是面向学生、比赛、项目、作业和面试场景的 AI 待办规划 Demo。数据和 API Key 只保存在本机。
+            序光面向学生、比赛、项目、作业和面试场景，帮助你自动判断优先级、安排提醒和生成今日计划。数据和 API Key 只保存在本机。
           </MutedText>
         </View>
       </AnimatedCard>
 
       <TouchableOpacity
         style={styles.danger}
-        onPress={() =>
-          Alert.alert("清空所有任务", "此操作会删除本地任务和已安排提醒。", [
-            { text: "取消", style: "cancel" },
-            { text: "清空", style: "destructive", onPress: clearTasks }
-          ])
-        }
+        disabled={clearing}
+        onPress={confirmClearTasks}
       >
         <Ionicons name="trash-outline" size={18} color={colors.red} />
-        <Text style={styles.dangerText}>清空所有任务</Text>
+        <Text style={styles.dangerText}>{clearing ? "正在清空..." : "清空所有任务"}</Text>
       </TouchableOpacity>
+      </MobilePageContainer>
     </AnimatedGlassScreen>
   );
 }
 
 const styles = StyleSheet.create({
+  pageTitle: {
+    marginTop: 16
+  },
   panel: {
     marginTop: 18,
     padding: 16,
-    borderRadius: radius.xl
+    borderRadius: 26
   },
   switchRow: {
     flexDirection: "row",
@@ -147,12 +172,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg
   },
   aboutIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(70,216,255,0.1)"
+    backgroundColor: "rgba(79,124,255,0.10)"
   },
   aboutText: {
     flex: 1
@@ -168,8 +193,8 @@ const styles = StyleSheet.create({
     minHeight: 52,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255,92,122,0.38)",
-    backgroundColor: "rgba(255,92,122,0.1)",
+    borderColor: "rgba(239,68,68,0.24)",
+    backgroundColor: "rgba(239,68,68,0.08)",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

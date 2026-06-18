@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-n
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
+import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText, PageTitle } from "@/components/Typography";
 import { categoryLabels, colors, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
@@ -68,6 +69,7 @@ export default function ConfirmImportScreen() {
 
   return (
     <AnimatedGlassScreen>
+      <MobilePageContainer>
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={22} color={colors.text} />
@@ -124,6 +126,7 @@ export default function ConfirmImportScreen() {
       <PrimaryButton onPress={submit} disabled={saving || !drafts.length}>
         {saving ? "加入中..." : "确认加入选中任务"}
       </PrimaryButton>
+      </MobilePageContainer>
     </AnimatedGlassScreen>
   );
 }
@@ -141,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255,255,255,0.72)",
     borderWidth: 1,
     borderColor: colors.border,
     marginTop: 3

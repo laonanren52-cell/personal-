@@ -2,10 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, StyleSheet, Text, Pressable, View } from "react-native";
+import { StyleSheet, Text, Pressable, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { BrandMark } from "@/components/BrandMark";
 import { FloatingEmptyState } from "@/components/FloatingEmptyState";
+import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { TaskCard } from "@/components/TaskCard";
 import { MutedText, SectionTitle } from "@/components/Typography";
 import { colors, gradients, priorityColors, radius, shadow } from "@/constants/theme";
@@ -50,10 +52,10 @@ export default function HomeScreen() {
 
   return (
     <AnimatedGlassScreen>
+      <MobilePageContainer>
       <View style={styles.topRow}>
         <View style={styles.titleBlock}>
-          <MutedText>AI 轻重缓急日程助手</MutedText>
-          <Text style={styles.screenTitle}>AI 今日指挥中心</Text>
+          <BrandMark showName subtitle="让每件事都有轻重先后" />
         </View>
         <Pressable style={styles.refresh} onPress={refreshPriorities}>
           <Ionicons name="refresh" size={18} color={colors.text} />
@@ -64,7 +66,7 @@ export default function HomeScreen() {
         <View style={styles.heroGlow} />
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
-            <Text style={styles.heroTitle}>AI 今日指挥中心</Text>
+            <Text style={styles.heroTitle}>序光今日指挥中心</Text>
             <MutedText>根据截止时间、重要程度和任务类型自动排序</MutedText>
           </View>
           <View style={[styles.pressureBadge, { borderColor: `${pressureColor}66` }]}>
@@ -125,18 +127,14 @@ export default function HomeScreen() {
               index={index}
               task={task}
               onToggle={() => toggleTask(task.id)}
-              onDelete={() =>
-                Alert.alert("删除任务", `确定删除“${task.title}”吗？`, [
-                  { text: "取消", style: "cancel" },
-                  { text: "删除", style: "destructive", onPress: () => deleteTask(task.id) }
-                ])
-              }
+              onDelete={() => deleteTask(task.id)}
             />
           ))
         ) : (
           <FloatingEmptyState onAction={() => router.push("/add")} />
         )}
       </View>
+      </MobilePageContainer>
     </AnimatedGlassScreen>
   );
 }
@@ -238,7 +236,9 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: "rgba(215,226,255,0.82)",
     overflow: "hidden",
-    marginTop: 18
+    marginTop: 18,
+    width: "74%",
+    maxWidth: 250
   },
   pressureFill: {
     height: "100%",

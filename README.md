@@ -1,6 +1,6 @@
-# AI 轻重缓急日程助手
+# 序光
 
-一个基于 React Native + Expo 的手机端 App Demo，面向学生、比赛、项目、作业、面试等场景，提供 AI 待办提醒、轻重缓急排序、图片导入任务和今日规划。
+让每件事都有轻重先后。序光是一个基于 React Native + Expo 的手机端 App Demo，面向学生、比赛、项目、作业、面试等场景，提供 AI 待办提醒、轻重缓急排序、图片导入任务和今日规划。
 
 ## 技术栈
 
@@ -59,6 +59,9 @@ dist/_redirects
 其中 `_redirects` 内容为：
 
 ```text
+/_expo/* /_expo/:splat 200
+/assets/* /assets/:splat 200
+/favicon.ico /favicon.ico 200
 /* /index.html 200
 ```
 
@@ -104,7 +107,7 @@ http://你的公网IP:3000
 
 ```bash
 npm install -g pm2
-pm2 start "npm run preview" --name personal-ai-schedule
+pm2 start "npm run preview" --name xuguang-schedule
 pm2 save
 ```
 

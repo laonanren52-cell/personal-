@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Animated, Easing, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText } from "@/components/Typography";
 import { colors, gradients, radius, shadow } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
@@ -93,6 +94,7 @@ export default function ImportScreen() {
 
   return (
     <AnimatedGlassScreen>
+      <MobilePageContainer>
       <MutedText>图片导入</MutedText>
       <Text style={styles.title}>从截图、通知、聊天记录中提取待办</Text>
 
@@ -133,6 +135,7 @@ export default function ImportScreen() {
         <Text style={styles.ocrLabel}>{busy ? "正在处理" : "最近识别文本"}</Text>
         <Text style={styles.ocrText}>{ocrText || "还没有识别记录。"}</Text>
       </AnimatedCard>
+      </MobilePageContainer>
     </AnimatedGlassScreen>
   );
 }

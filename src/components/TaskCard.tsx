@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
-import { Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { categoryLabels, colors, gradients, priorityColors, priorityGlowColors, priorityLabels, radius, shadow } from "@/constants/theme";
 import { Task } from "@/types/task";
@@ -11,13 +11,14 @@ type Props = {
   task: Task;
   index?: number;
   onToggle: () => void;
-  onDelete: () => void;
+  onDelete: () => Promise<void> | void;
 };
 
 export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
   const priorityColor = priorityColors[task.priorityLevel];
   const pulse = useRef(new Animated.Value(0)).current;
   const checkScale = useRef(new Animated.Value(1)).current;
+  const removeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (task.priorityLevel !== "high" || task.completed) {
@@ -51,12 +52,38 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
     onToggle();
   };
 
+  const deleteWithConfirm = () => {
+    Alert.alert("删除这个任务？", "删除后不可恢复。", [
+      { text: "取消", style: "cancel" },
+      {
+        text: "删除",
+        style: "destructive",
+        onPress: () => {
+          Animated.timing(removeAnim, {
+            toValue: 0,
+            duration: 180,
+            easing: Easing.out(Easing.cubic),
+            useNativeDriver: true
+          }).start(() => {
+            void onDelete();
+          });
+        }
+      }
+    ]);
+  };
+
   return (
     <AnimatedCard
       delay={index * 60}
       colorsOverride={task.completed ? gradients.cardDim : gradients.card}
       contentStyle={[styles.card, task.completed && styles.completedCard]}
     >
+      <Animated.View
+        style={{
+          opacity: removeAnim,
+          transform: [{ scale: removeAnim.interpolate({ inputRange: [0, 1], outputRange: [0.96, 1] }) }]
+        }}
+      >
       {task.priorityLevel === "high" && !task.completed ? (
         <Animated.View
           pointerEvents="none"
@@ -85,8 +112,8 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
             <Text style={[styles.title, task.completed && styles.doneText]} numberOfLines={2}>
               {task.title}
             </Text>
-            <Pressable style={styles.deleteButton} onPress={onDelete}>
-              <Ionicons name="trash-outline" size={15} color={colors.dim} />
+            <Pressable style={styles.deleteButton} onPress={deleteWithConfirm}>
+              <Ionicons name="trash-outline" size={15} color={colors.red} />
             </Pressable>
           </View>
           <View style={styles.metaRow}>
@@ -119,6 +146,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
         </Text>
         <Text style={styles.score}>AI {task.score}</Text>
       </LinearGradient>
+      </Animated.View>
     </AnimatedCard>
   );
 }

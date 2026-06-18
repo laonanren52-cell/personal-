@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingBottom: 132
   },
   content: {
-    paddingHorizontal: 18,
+    paddingHorizontal: 0,
     paddingTop: 8
   },
   orb: {
