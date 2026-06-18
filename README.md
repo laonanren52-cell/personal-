@@ -35,6 +35,35 @@ npm run build
 
 构建完成后会生成 `dist/` 目录。腾讯云静态网站、COS 静态托管、CloudBase 静态托管或 Nginx 都应该部署 `dist/` 目录里的内容，而不是部署项目根目录。
 
+### EdgeOne Pages 配置
+
+EdgeOne Pages 是静态站点部署，不需要启动 `3000` 端口，也不要把 `npm run dev` 或 `npm run preview` 填成启动命令。
+
+EdgeOne Pages 请使用以下配置：
+
+```text
+框架预设：Other / 自定义静态站点
+根目录：/
+安装命令：npm install
+构建命令：npm run build
+输出目录：dist
+```
+
+`npm run build` 会执行 Expo Web 导出，并在构建后自动检查 `dist/index.html`。同时会生成：
+
+```text
+dist/404.html
+dist/_redirects
+```
+
+其中 `_redirects` 内容为：
+
+```text
+/* /index.html 200
+```
+
+这样可以兼容 Expo Router / React Native Web 的前端路由刷新和直接访问子路径。
+
 ### 一键检查并修复腾讯云服务器
 
 在腾讯云服务器上执行：
