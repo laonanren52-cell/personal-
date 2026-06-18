@@ -2,10 +2,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { AnimatedCard } from "@/components/AnimatedCard";
+import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
-import { GlassScreen } from "@/components/GlassScreen";
 import { MutedText, PageTitle } from "@/components/Typography";
-import { categoryLabels, colors } from "@/constants/theme";
+import { categoryLabels, colors, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 import { draftDeadlineToText } from "@/services/extract";
 import { ImportTaskDraft, TaskCategory, TaskDraft } from "@/types/task";
@@ -66,7 +67,7 @@ export default function ConfirmImportScreen() {
   };
 
   return (
-    <GlassScreen>
+    <AnimatedGlassScreen>
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={22} color={colors.text} />
@@ -79,7 +80,7 @@ export default function ConfirmImportScreen() {
 
       {drafts.length ? (
         drafts.map((draft, index) => (
-          <View key={`${draft.title}-${index}`} style={styles.card}>
+          <AnimatedCard key={`${draft.title}-${index}`} delay={index * 80} contentStyle={styles.card}>
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>候选任务 {index + 1}</Text>
               <Switch
@@ -112,18 +113,18 @@ export default function ConfirmImportScreen() {
                 </Chip>
               ))}
             </View>
-          </View>
+          </AnimatedCard>
         ))
       ) : (
-        <View style={styles.empty}>
+        <AnimatedCard contentStyle={styles.empty}>
           <Text style={styles.emptyText}>暂无待确认任务，请先从图片导入页识别。</Text>
-        </View>
+        </AnimatedCard>
       )}
 
       <PrimaryButton onPress={submit} disabled={saving || !drafts.length}>
         {saving ? "加入中..." : "确认加入选中任务"}
       </PrimaryButton>
-    </GlassScreen>
+    </AnimatedGlassScreen>
   );
 }
 
@@ -149,10 +150,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   card: {
-    borderRadius: 26,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.065)",
+    borderRadius: radius.xl,
     padding: 16,
     marginBottom: 14
   },
@@ -181,10 +179,7 @@ const styles = StyleSheet.create({
   },
   empty: {
     padding: 24,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    borderRadius: radius.lg,
     marginBottom: 16
   },
   emptyText: {

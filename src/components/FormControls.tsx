@@ -1,6 +1,7 @@
-import { PropsWithChildren } from "react";
-import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
-import { colors } from "@/constants/theme";
+import { LinearGradient } from "expo-linear-gradient";
+import { PropsWithChildren, useRef } from "react";
+import { Animated, Pressable, StyleSheet, Text, TextInput, TextInputProps, View } from "react-native";
+import { colors, gradients, radius, shadow } from "@/constants/theme";
 
 type FieldProps = TextInputProps & {
   label: string;
@@ -28,9 +29,9 @@ export function Chip({
   onPress: () => void;
 }>) {
   return (
-    <TouchableOpacity style={[styles.chip, active && styles.activeChip]} onPress={onPress}>
+    <Pressable style={[styles.chip, active && styles.activeChip]} onPress={onPress}>
       <Text style={[styles.chipText, active && styles.activeChipText]}>{children}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
@@ -42,10 +43,30 @@ export function PrimaryButton({
   onPress: () => void;
   disabled?: boolean;
 }>) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const animateTo = (toValue: number) => {
+    Animated.spring(scale, {
+      toValue,
+      friction: 7,
+      tension: 180,
+      useNativeDriver: true
+    }).start();
+  };
+
   return (
-    <TouchableOpacity style={[styles.button, disabled && styles.disabled]} onPress={onPress} disabled={disabled}>
-      <Text style={styles.buttonText}>{children}</Text>
-    </TouchableOpacity>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        onPress={onPress}
+        onPressIn={() => animateTo(0.97)}
+        onPressOut={() => animateTo(1)}
+        disabled={disabled}
+        style={disabled && styles.disabled}
+      >
+        <LinearGradient colors={gradients.primaryButton} style={styles.button}>
+          <Text style={styles.buttonText}>{children}</Text>
+        </LinearGradient>
+      </Pressable>
+    </Animated.View>
   );
 }
 
@@ -62,7 +83,7 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 50,
-    borderRadius: 18,
+    borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: "rgba(255,255,255,0.07)",
@@ -75,7 +96,7 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: 13,
     paddingVertical: 9,
-    borderRadius: 999,
+    borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: "rgba(255,255,255,0.05)"
@@ -95,14 +116,10 @@ const styles = StyleSheet.create({
   },
   button: {
     minHeight: 54,
-    borderRadius: 20,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.primary,
-    shadowColor: colors.primary,
-    shadowOpacity: 0.35,
-    shadowRadius: 18,
-    elevation: 8
+    ...shadow.glow
   },
   disabled: {
     opacity: 0.55

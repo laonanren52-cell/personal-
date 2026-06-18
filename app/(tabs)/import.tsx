@@ -1,20 +1,47 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import { useState } from "react";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { GlassScreen } from "@/components/GlassScreen";
-import { MutedText, PageTitle } from "@/components/Typography";
-import { colors } from "@/constants/theme";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Animated, Easing, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { AnimatedCard } from "@/components/AnimatedCard";
+import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { MutedText } from "@/components/Typography";
+import { colors, gradients, radius, shadow } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 import { extractTasksFromText } from "@/services/extract";
 import { recognizeImageText } from "@/services/ocr";
+
+type ImportStatus = "idle" | "recognizing" | "extracting" | "confirming";
 
 export default function ImportScreen() {
   const { settings, setImportDrafts } = useTasks();
   const [preview, setPreview] = useState<string | null>(null);
   const [ocrText, setOcrText] = useState("");
   const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<ImportStatus>("idle");
+  const scan = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scan, {
+          toValue: 1,
+          duration: 1900,
+          easing: Easing.inOut(Easing.cubic),
+          useNativeDriver: true
+        }),
+        Animated.timing(scan, {
+          toValue: 0,
+          duration: 1900,
+          easing: Easing.inOut(Easing.cubic),
+          useNativeDriver: true
+        })
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [scan]);
 
   const pick = async (mode: "camera" | "library") => {
     const permission =
@@ -38,6 +65,7 @@ export default function ImportScreen() {
     const asset = result.assets[0];
     setPreview(asset.uri);
     setBusy(true);
+    setStatus("recognizing");
     try {
       const text = await recognizeImageText({
         base64: asset.base64,
@@ -45,14 +73,18 @@ export default function ImportScreen() {
         aiEnabled: settings.aiEnabled
       });
       setOcrText(text);
+      setStatus("extracting");
       const drafts = extractTasksFromText(text);
       if (!drafts.length) {
+        setStatus("idle");
         Alert.alert("未提取到任务", "你可以换一张更清晰的图片，或稍后手动添加任务。");
         return;
       }
+      setStatus("confirming");
       setImportDrafts(drafts);
       router.push("/confirm-import");
     } catch (error) {
+      setStatus("idle");
       Alert.alert("识别失败", error instanceof Error ? error.message : "请稍后再试");
     } finally {
       setBusy(false);
@@ -60,69 +92,155 @@ export default function ImportScreen() {
   };
 
   return (
-    <GlassScreen>
+    <AnimatedGlassScreen>
       <MutedText>图片导入</MutedText>
-      <PageTitle>从截图、白板或通知里提取任务</PageTitle>
+      <Text style={styles.title}>从截图、通知、聊天记录中提取待办</Text>
 
-      <View style={styles.scanPanel}>
-        <View style={styles.scanCircle}>
-          <Ionicons name="scan-outline" size={54} color={colors.cyan} />
+      <AnimatedCard delay={80} contentStyle={styles.scanPanel}>
+        <View style={styles.scanWindow}>
+          <View style={styles.scanGlow} />
+          <Ionicons name="scan-outline" size={70} color={colors.cyan} />
+          <Animated.View
+            style={[
+              styles.scanLine,
+              {
+                transform: [
+                  {
+                    translateY: scan.interpolate({ inputRange: [0, 1], outputRange: [-72, 72] })
+                  }
+                ]
+              }
+            ]}
+          />
         </View>
-        <Text style={styles.scanTitle}>OCR 可用 Mock 保底</Text>
-        <MutedText style={styles.centerText}>
-          未配置 API Key 时会使用内置模拟文本，保证 Demo 可以完整走通识别和确认流程。
-        </MutedText>
+        <Text style={styles.scanTitle}>AI 任务扫描</Text>
+        <MutedText style={styles.centerText}>选择截图后，系统会先识别文字，再提取可确认的任务。</MutedText>
+        <View style={styles.statusRow}>
+          {["recognizing", "extracting", "confirming"].map((item) => (
+            <View key={item} style={[styles.statusDot, status === item && styles.statusDotActive]} />
+          ))}
+          <Text style={styles.statusText}>{getStatusText(status)}</Text>
+        </View>
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.actionButton} onPress={() => pick("camera")} disabled={busy}>
-            <Ionicons name="camera-outline" size={20} color={colors.text} />
-            <Text style={styles.actionText}>拍照</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton} onPress={() => pick("library")} disabled={busy}>
-            <Ionicons name="images-outline" size={20} color={colors.text} />
-            <Text style={styles.actionText}>相册</Text>
-          </TouchableOpacity>
+          <ActionButton icon="camera-outline" label="拍照" onPress={() => pick("camera")} disabled={busy} />
+          <ActionButton icon="images-outline" label="相册" onPress={() => pick("library")} disabled={busy} />
         </View>
-      </View>
+      </AnimatedCard>
 
       {preview ? <Image source={{ uri: preview }} style={styles.preview} /> : null}
 
-      <View style={styles.ocrBox}>
-        <Text style={styles.ocrLabel}>{busy ? "识别中..." : "最近识别文本"}</Text>
+      <AnimatedCard delay={180} contentStyle={styles.ocrBox}>
+        <Text style={styles.ocrLabel}>{busy ? "正在处理" : "最近识别文本"}</Text>
         <Text style={styles.ocrText}>{ocrText || "还没有识别记录。"}</Text>
-      </View>
-    </GlassScreen>
+      </AnimatedCard>
+    </AnimatedGlassScreen>
   );
 }
 
+function ActionButton({
+  icon,
+  label,
+  onPress,
+  disabled
+}: {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <Pressable onPress={onPress} disabled={disabled} style={disabled && styles.disabled}>
+      <LinearGradient colors={gradients.primaryButton} style={styles.actionButton}>
+        <Ionicons name={icon} size={20} color={colors.text} />
+        <Text style={styles.actionText}>{label}</Text>
+      </LinearGradient>
+    </Pressable>
+  );
+}
+
+function getStatusText(status: ImportStatus) {
+  if (status === "recognizing") return "正在识别";
+  if (status === "extracting") return "提取任务中";
+  if (status === "confirming") return "等待确认";
+  return "等待图片";
+}
+
 const styles = StyleSheet.create({
+  title: {
+    color: colors.text,
+    fontSize: 27,
+    lineHeight: 34,
+    fontWeight: "900",
+    letterSpacing: 0,
+    marginBottom: 18
+  },
   scanPanel: {
-    marginTop: 18,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.065)",
+    borderRadius: 32,
     padding: 22,
     alignItems: "center"
   },
-  scanCircle: {
-    width: 112,
-    height: 112,
-    borderRadius: 56,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(70,216,255,0.10)",
+  scanWindow: {
+    width: "100%",
+    height: 190,
+    borderRadius: radius.xl,
     borderWidth: 1,
     borderColor: "rgba(70,216,255,0.28)",
-    marginBottom: 16
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(7,9,20,0.40)",
+    overflow: "hidden",
+    marginBottom: 18
+  },
+  scanGlow: {
+    position: "absolute",
+    width: 170,
+    height: 170,
+    borderRadius: 85,
+    backgroundColor: "rgba(70,216,255,0.16)"
+  },
+  scanLine: {
+    position: "absolute",
+    left: 18,
+    right: 18,
+    height: 2,
+    borderRadius: 2,
+    backgroundColor: colors.cyan,
+    shadowColor: colors.cyan,
+    shadowOpacity: 0.9,
+    shadowRadius: 14
   },
   scanTitle: {
     color: colors.text,
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: "900",
     marginBottom: 8
   },
   centerText: {
     textAlign: "center"
+  },
+  statusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    marginTop: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: radius.pill,
+    backgroundColor: "rgba(255,255,255,0.07)"
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.dim
+  },
+  statusDotActive: {
+    backgroundColor: colors.cyan
+  },
+  statusText: {
+    color: colors.text,
+    fontSize: 12,
+    fontWeight: "900"
   },
   buttonRow: {
     flexDirection: "row",
@@ -136,12 +254,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     height: 52,
     borderRadius: 18,
-    backgroundColor: colors.primary
+    ...shadow.glow
   },
   actionText: {
     color: colors.text,
     fontSize: 15,
     fontWeight: "900"
+  },
+  disabled: {
+    opacity: 0.55
   },
   preview: {
     width: "100%",
@@ -153,10 +274,7 @@ const styles = StyleSheet.create({
   ocrBox: {
     marginTop: 16,
     padding: 16,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(7,9,20,0.45)"
+    borderRadius: 24
   },
   ocrLabel: {
     color: colors.cyan,

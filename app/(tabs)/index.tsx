@@ -1,12 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { GlassScreen } from "@/components/GlassScreen";
-import { MetricCard } from "@/components/MetricCard";
+import { Alert, StyleSheet, Text, Pressable, View } from "react-native";
+import { AnimatedCard } from "@/components/AnimatedCard";
+import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { FloatingEmptyState } from "@/components/FloatingEmptyState";
 import { TaskCard } from "@/components/TaskCard";
-import { MutedText, PageTitle, SectionTitle } from "@/components/Typography";
-import { colors } from "@/constants/theme";
+import { MutedText, SectionTitle } from "@/components/Typography";
+import { colors, gradients, priorityColors, radius, shadow } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 import { TaskQuadrant } from "@/types/task";
 import { formatDeadline, isToday } from "@/utils/date";
@@ -14,7 +16,7 @@ import { formatDeadline, isToday } from "@/utils/date";
 const filters: Array<TaskQuadrant | "全部"> = ["全部", "紧急且重要", "重要但不紧急", "紧急但不重要", "普通事项"];
 
 export default function HomeScreen() {
-  const { tasks, loading, toggleTask, deleteTask, refreshPriorities } = useTasks();
+  const { tasks, toggleTask, deleteTask, refreshPriorities } = useTasks();
   const [filter, setFilter] = useState<TaskQuadrant | "全部">("全部");
 
   const overview = useMemo(() => {
@@ -25,41 +27,63 @@ export default function HomeScreen() {
       return task.priorityLevel === "high" && diff <= 72 * 36e5;
     }).length;
     const nearest = active[0];
+    const pressure = Math.min(
+      100,
+      Math.round(todayCount * 16 + inThreeDaysHigh * 22 + active.filter((task) => task.priorityLevel === "medium").length * 7)
+    );
     const aiSuggestion =
       active.find((task) => task.priorityLevel === "high")?.aiAdvice ??
-      "今天节奏不错，先处理最接近截止的任务。";
+      (active.length ? "先处理最近截止任务，再保留一段复盘时间。" : "今天可以轻装上阵，先规划一个小目标。");
+
     return {
+      active,
       todayCount,
       inThreeDaysHigh,
+      pressure,
       nearestText: nearest ? `${nearest.title} · ${formatDeadline(nearest.deadline)}` : "暂无截止压力",
       aiSuggestion
     };
   }, [tasks]);
 
   const visibleTasks = filter === "全部" ? tasks : tasks.filter((task) => task.quadrant === filter);
+  const pressureColor = overview.inThreeDaysHigh > 0 ? colors.red : colors.green;
 
   return (
-    <GlassScreen>
+    <AnimatedGlassScreen>
       <View style={styles.topRow}>
         <View style={styles.titleBlock}>
           <MutedText>AI 轻重缓急日程助手</MutedText>
-          <PageTitle>今天先做真正要紧的事</PageTitle>
+          <Text style={styles.screenTitle}>AI 今日指挥中心</Text>
         </View>
-        <TouchableOpacity style={styles.refresh} onPress={refreshPriorities}>
+        <Pressable style={styles.refresh} onPress={refreshPriorities}>
           <Ionicons name="refresh" size={18} color={colors.text} />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
-      <LinearGradient colors={["rgba(139,124,255,0.34)", "rgba(70,216,255,0.13)"]} style={styles.hero}>
-        <Text style={styles.heroLabel}>AI 今日建议</Text>
-        <Text style={styles.heroAdvice} numberOfLines={3}>
-          {overview.aiSuggestion}
-        </Text>
-        <View style={styles.metricGrid}>
-          <View style={styles.metricRow}>
-            <MetricCard label="今日待完成" value={overview.todayCount} accent={colors.cyan} />
-            <MetricCard label="3天内高优先级" value={overview.inThreeDaysHigh} accent={colors.red} />
+      <AnimatedCard delay={80} contentStyle={styles.hero} colorsOverride={gradients.hero}>
+        <View style={styles.heroGlow} />
+        <View style={styles.heroTop}>
+          <View style={styles.heroCopy}>
+            <Text style={styles.heroTitle}>AI 今日指挥中心</Text>
+            <MutedText>根据截止时间、重要程度和任务类型自动排序</MutedText>
           </View>
+          <View style={[styles.pressureBadge, { borderColor: `${pressureColor}66` }]}>
+            <Text style={[styles.pressureNumber, { color: pressureColor }]}>{overview.pressure}</Text>
+            <Text style={styles.pressureLabel}>压力指数</Text>
+          </View>
+        </View>
+
+        <View style={styles.pressureTrack}>
+          <View style={[styles.pressureFill, { width: `${overview.pressure}%`, backgroundColor: pressureColor }]} />
+        </View>
+
+        <View style={styles.metricGrid}>
+          <MetricBlock label="今日待完成" value={overview.todayCount} accent={colors.cyan} />
+          <MetricBlock
+            label="3天高优先"
+            value={overview.inThreeDaysHigh}
+            accent={overview.inThreeDaysHigh ? colors.red : colors.green}
+          />
           <View style={styles.nearestCard}>
             <Text style={styles.nearestLabel}>最近截止</Text>
             <Text style={styles.nearestText} numberOfLines={2}>
@@ -67,30 +91,38 @@ export default function HomeScreen() {
             </Text>
           </View>
         </View>
-      </LinearGradient>
+
+        <LinearGradient colors={gradients.cyanGlass} style={styles.aiTip}>
+          <Ionicons name="sparkles-outline" size={16} color={colors.cyan} />
+          <Text style={styles.aiTipText} numberOfLines={2}>
+            {overview.aiSuggestion}
+          </Text>
+        </LinearGradient>
+      </AnimatedCard>
 
       <View style={styles.sectionHeader}>
         <SectionTitle>任务看板</SectionTitle>
-        <Text style={styles.countText}>{tasks.filter((task) => !task.completed).length} 个待办</Text>
+        <Text style={styles.countText}>{overview.active.length} 个待办</Text>
       </View>
 
       <View style={styles.filterRow}>
         {filters.map((item) => (
-          <TouchableOpacity
+          <Pressable
             key={item}
             style={[styles.filterChip, filter === item && styles.activeFilter]}
             onPress={() => setFilter(item)}
           >
             <Text style={[styles.filterText, filter === item && styles.activeFilterText]}>{item}</Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
 
       <View>
         {visibleTasks.length ? (
-          visibleTasks.map((task) => (
+          visibleTasks.map((task, index) => (
             <TaskCard
               key={task.id}
+              index={index}
               task={task}
               onToggle={() => toggleTask(task.id)}
               onDelete={() =>
@@ -102,14 +134,20 @@ export default function HomeScreen() {
             />
           ))
         ) : (
-          <View style={styles.empty}>
-            <Ionicons name="planet-outline" size={42} color={colors.dim} />
-            <Text style={styles.emptyTitle}>暂无任务</Text>
-            <MutedText>从添加页创建任务，或用图片导入识别截图里的待办。</MutedText>
-          </View>
+          <FloatingEmptyState onAction={() => router.push("/add")} />
         )}
       </View>
-    </GlassScreen>
+    </AnimatedGlassScreen>
+  );
+}
+
+function MetricBlock({ label, value, accent }: { label: string; value: number; accent: string }) {
+  return (
+    <View style={styles.metricBlock}>
+      <View style={[styles.metricDot, { backgroundColor: accent }]} />
+      <Text style={styles.metricValue}>{value}</Text>
+      <Text style={styles.metricLabel}>{label}</Text>
+    </View>
   );
 }
 
@@ -124,6 +162,13 @@ const styles = StyleSheet.create({
   titleBlock: {
     flex: 1
   },
+  screenTitle: {
+    color: colors.text,
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: "900",
+    letterSpacing: 0
+  },
   refresh: {
     width: 42,
     height: 42,
@@ -135,38 +180,108 @@ const styles = StyleSheet.create({
     borderColor: colors.border
   },
   hero: {
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.18)",
+    borderRadius: 32,
     padding: 18,
+    marginBottom: 24,
     overflow: "hidden",
-    marginBottom: 24
+    position: "relative"
   },
-  heroLabel: {
-    color: colors.cyan,
-    fontSize: 12,
-    fontWeight: "900",
-    marginBottom: 8,
-    letterSpacing: 0
+  heroGlow: {
+    position: "absolute",
+    width: 170,
+    height: 170,
+    borderRadius: 85,
+    right: -56,
+    top: -48,
+    backgroundColor: "rgba(70,216,255,0.20)"
   },
-  heroAdvice: {
+  heroTop: {
+    flexDirection: "row",
+    gap: 14,
+    alignItems: "flex-start",
+    justifyContent: "space-between"
+  },
+  heroCopy: {
+    flex: 1
+  },
+  heroTitle: {
     color: colors.text,
-    fontSize: 22,
+    fontSize: 23,
     lineHeight: 29,
     fontWeight: "900",
+    letterSpacing: 0,
+    marginBottom: 6
+  },
+  pressureBadge: {
+    width: 82,
+    height: 82,
+    borderRadius: 41,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(7,9,20,0.42)"
+  },
+  pressureNumber: {
+    fontSize: 24,
+    lineHeight: 28,
+    fontWeight: "900",
     letterSpacing: 0
   },
-  metricGrid: {
-    marginTop: 18,
-    gap: 10
+  pressureLabel: {
+    color: colors.muted,
+    fontSize: 10,
+    fontWeight: "800",
+    marginTop: 2
   },
-  metricRow: {
+  pressureTrack: {
+    height: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.10)",
+    overflow: "hidden",
+    marginTop: 18
+  },
+  pressureFill: {
+    height: "100%",
+    borderRadius: 999
+  },
+  metricGrid: {
+    marginTop: 16,
     flexDirection: "row",
-    gap: 10
+    gap: 10,
+    flexWrap: "wrap"
+  },
+  metricBlock: {
+    flexGrow: 1,
+    minWidth: "30%",
+    minHeight: 96,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: 13,
+    backgroundColor: "rgba(7,9,20,0.34)"
+  },
+  metricDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginBottom: 13
+  },
+  metricValue: {
+    color: colors.text,
+    fontSize: 25,
+    lineHeight: 29,
+    fontWeight: "900"
+  },
+  metricLabel: {
+    color: colors.muted,
+    fontSize: 11,
+    fontWeight: "800",
+    marginTop: 4
   },
   nearestCard: {
-    minHeight: 78,
-    borderRadius: 20,
+    flexBasis: "100%",
+    minHeight: 72,
+    borderRadius: radius.lg,
     padding: 14,
     borderWidth: 1,
     borderColor: colors.border,
@@ -176,12 +291,29 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: 12,
     fontWeight: "800",
-    marginBottom: 8
+    marginBottom: 6
   },
   nearestText: {
     color: colors.text,
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: "800"
+  },
+  aiTip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 9,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "rgba(70,216,255,0.18)",
+    padding: 12,
+    marginTop: 14
+  },
+  aiTipText: {
+    flex: 1,
+    color: colors.text,
+    fontSize: 13,
+    lineHeight: 19,
     fontWeight: "800"
   },
   sectionHeader: {
@@ -204,14 +336,15 @@ const styles = StyleSheet.create({
   filterChip: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 999,
+    borderRadius: radius.pill,
     backgroundColor: "rgba(255,255,255,0.06)",
     borderWidth: 1,
     borderColor: colors.border
   },
   activeFilter: {
     backgroundColor: "rgba(139,124,255,0.24)",
-    borderColor: colors.primary
+    borderColor: colors.primary,
+    ...shadow.glow
   },
   filterText: {
     color: colors.muted,
@@ -220,22 +353,5 @@ const styles = StyleSheet.create({
   },
   activeFilterText: {
     color: colors.text
-  },
-  empty: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 64,
-    paddingHorizontal: 22,
-    borderRadius: 26,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.045)"
-  },
-  emptyTitle: {
-    color: colors.text,
-    fontSize: 18,
-    fontWeight: "900",
-    marginTop: 12,
-    marginBottom: 6
   }
 });

@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { AnimatedCard } from "@/components/AnimatedCard";
+import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
-import { GlassScreen } from "@/components/GlassScreen";
 import { MutedText, PageTitle, SectionTitle } from "@/components/Typography";
-import { colors } from "@/constants/theme";
+import { colors, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 
 const offsetOptions = [
@@ -35,11 +36,11 @@ export default function SettingsScreen() {
   };
 
   return (
-    <GlassScreen>
+    <AnimatedGlassScreen>
       <MutedText>设置</MutedText>
       <PageTitle>真实 AI 与提醒偏好</PageTitle>
 
-      <View style={styles.panel}>
+      <AnimatedCard delay={80} contentStyle={styles.panel}>
         <Field
           label="API Key"
           value={apiKey}
@@ -71,9 +72,9 @@ export default function SettingsScreen() {
         </View>
 
         <PrimaryButton onPress={save}>保存设置</PrimaryButton>
-      </View>
+      </AnimatedCard>
 
-      <View style={styles.about}>
+      <AnimatedCard delay={160} contentStyle={styles.about}>
         <View style={styles.aboutIcon}>
           <Ionicons name="information-circle-outline" size={24} color={colors.cyan} />
         </View>
@@ -83,7 +84,7 @@ export default function SettingsScreen() {
             这是面向学生、比赛、项目、作业和面试场景的 AI 待办规划 Demo。数据和 API Key 只保存在本机。
           </MutedText>
         </View>
-      </View>
+      </AnimatedCard>
 
       <TouchableOpacity
         style={styles.danger}
@@ -97,7 +98,7 @@ export default function SettingsScreen() {
         <Ionicons name="trash-outline" size={18} color={colors.red} />
         <Text style={styles.dangerText}>清空所有任务</Text>
       </TouchableOpacity>
-    </GlassScreen>
+    </AnimatedGlassScreen>
   );
 }
 
@@ -105,10 +106,7 @@ const styles = StyleSheet.create({
   panel: {
     marginTop: 18,
     padding: 16,
-    borderRadius: 28,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.065)"
+    borderRadius: radius.xl
   },
   switchRow: {
     flexDirection: "row",
@@ -146,10 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 12,
     padding: 16,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.05)"
+    borderRadius: radius.lg
   },
   aboutIcon: {
     width: 40,

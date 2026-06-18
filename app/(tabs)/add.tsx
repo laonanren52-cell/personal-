@@ -1,10 +1,12 @@
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, View } from "react-native";
-import { router } from "expo-router";
+import { AnimatedCard } from "@/components/AnimatedCard";
+import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
-import { GlassScreen } from "@/components/GlassScreen";
-import { MutedText, PageTitle, SectionTitle } from "@/components/Typography";
-import { categoryLabels, colors } from "@/constants/theme";
+import { MutedText, SectionTitle } from "@/components/Typography";
+import { categoryLabels, colors, gradients, radius } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 import { TaskCategory, TaskDraft } from "@/types/task";
 import { parseInputDateTime, toInputDateTime } from "@/utils/date";
@@ -31,6 +33,7 @@ export default function AddScreen() {
   const [reminderOffsets, setReminderOffsets] = useState<number[]>(settings.defaultReminderOffsets);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const toggleOffset = (value: number) => {
     setReminderOffsets((current) =>
@@ -62,11 +65,14 @@ export default function AddScreen() {
     };
 
     setSaving(true);
+    setSaved(false);
     try {
       await addTask(draft);
       setTitle("");
       setDescription("");
       setNotes("");
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1600);
       Alert.alert("已添加", "AI 已完成轻重缓急分析并安排提醒。", [
         { text: "查看首页", onPress: () => router.replace("/") }
       ]);
@@ -78,10 +84,15 @@ export default function AddScreen() {
   };
 
   return (
-    <GlassScreen>
-      <MutedText>手动创建</MutedText>
-      <PageTitle>把任务交给 AI 排序</PageTitle>
-      <View style={styles.panel}>
+    <AnimatedGlassScreen>
+      <MutedText>新建任务</MutedText>
+      <Text style={styles.title}>让 AI 先判断轻重缓急</Text>
+
+      <AnimatedCard delay={80} contentStyle={styles.group}>
+        <View style={styles.groupHeader}>
+          <Ionicons name="document-text-outline" size={18} color={colors.cyan} />
+          <SectionTitle style={styles.groupTitle}>核心信息</SectionTitle>
+        </View>
         <Field label="任务标题" value={title} onChangeText={setTitle} placeholder="例如：提交蓝桥杯资料" />
         <Field
           label="任务描述"
@@ -92,8 +103,14 @@ export default function AddScreen() {
           style={styles.multiline}
         />
         <Field label="截止日期和时间" value={deadlineText} onChangeText={setDeadlineText} placeholder="YYYY-MM-DD HH:mm" />
+      </AnimatedCard>
 
-        <SectionTitle style={styles.smallTitle}>任务类型</SectionTitle>
+      <AnimatedCard delay={160} contentStyle={styles.group}>
+        <View style={styles.groupHeader}>
+          <Ionicons name="options-outline" size={18} color={colors.primary} />
+          <SectionTitle style={styles.groupTitle}>任务属性</SectionTitle>
+        </View>
+        <Text style={styles.label}>任务类型</Text>
         <View style={styles.chips}>
           {categories.map((item) => (
             <Chip key={item} active={category === item} onPress={() => setCategory(item)}>
@@ -102,11 +119,11 @@ export default function AddScreen() {
           ))}
         </View>
 
-        <SectionTitle style={styles.smallTitle}>重要程度</SectionTitle>
-        <View style={styles.chips}>
+        <Text style={styles.label}>重要程度</Text>
+        <View style={styles.energyRow}>
           {[1, 2, 3, 4, 5].map((item) => (
             <Chip key={item} active={importance === item} onPress={() => setImportance(item)}>
-              {item}
+              <Text style={[styles.energyDot, importance >= item && styles.energyDotActive]}>●</Text>
             </Chip>
           ))}
         </View>
@@ -118,10 +135,12 @@ export default function AddScreen() {
           keyboardType="decimal-pad"
           placeholder="例如 2"
         />
+      </AnimatedCard>
 
+      <AnimatedCard delay={240} contentStyle={styles.group}>
         <View style={styles.switchRow}>
-          <View>
-            <Text style={styles.switchTitle}>需要提前提醒</Text>
+          <View style={styles.switchText}>
+            <Text style={styles.switchTitle}>提前提醒</Text>
             <MutedText>创建后自动安排本地通知</MutedText>
           </View>
           <Switch
@@ -134,8 +153,8 @@ export default function AddScreen() {
 
         {reminderEnabled ? (
           <>
-            <SectionTitle style={styles.smallTitle}>提醒时间</SectionTitle>
-            <View style={styles.chips}>
+            <Text style={styles.label}>提醒时间</Text>
+            <View style={styles.segmented}>
               {offsetOptions.map((item) => (
                 <Chip key={item.value} active={reminderOffsets.includes(item.value)} onPress={() => toggleOffset(item.value)}>
                   {item.label}
@@ -146,31 +165,50 @@ export default function AddScreen() {
         ) : null}
 
         <Field label="备注" value={notes} onChangeText={setNotes} placeholder="可选，例如老师要求、提交入口" multiline style={styles.multiline} />
+      </AnimatedCard>
+
+      <View style={styles.footer}>
         <PrimaryButton onPress={submit} disabled={saving}>
-          {saving ? "分析中..." : "添加并分析优先级"}
+          {saved ? "已完成分析" : saving ? "分析中..." : "添加并分析优先级"}
         </PrimaryButton>
       </View>
-    </GlassScreen>
+    </AnimatedGlassScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  panel: {
-    marginTop: 18,
+  title: {
+    color: colors.text,
+    fontSize: 28,
+    lineHeight: 35,
+    fontWeight: "900",
+    letterSpacing: 0,
+    marginBottom: 18
+  },
+  group: {
     padding: 16,
-    borderRadius: 28,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: "rgba(255,255,255,0.065)"
+    borderRadius: radius.xl,
+    marginBottom: 14
+  },
+  groupHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 14
+  },
+  groupTitle: {
+    fontSize: 16
   },
   multiline: {
     minHeight: 92,
     textAlignVertical: "top"
   },
-  smallTitle: {
-    marginBottom: 10,
-    marginTop: 4,
-    fontSize: 15
+  label: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "800",
+    marginBottom: 9,
+    letterSpacing: 0
   },
   chips: {
     flexDirection: "row",
@@ -178,22 +216,53 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 16
   },
+  energyRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16
+  },
+  energyDot: {
+    color: colors.dim,
+    fontSize: 13,
+    lineHeight: 15
+  },
+  energyDotActive: {
+    color: colors.cyan
+  },
   switchRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 14,
     padding: 14,
-    borderRadius: 20,
+    borderRadius: 22,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: "rgba(7,9,20,0.35)",
     marginBottom: 16
   },
+  switchText: {
+    flex: 1
+  },
   switchTitle: {
     color: colors.text,
     fontSize: 15,
-    fontWeight: "800",
+    fontWeight: "900",
     marginBottom: 4
+  },
+  segmented: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+    padding: 6,
+    borderRadius: 22,
+    backgroundColor: "rgba(7,9,20,0.32)"
+  },
+  footer: {
+    marginTop: 2,
+    marginBottom: 8,
+    borderRadius: 22,
+    backgroundColor: "rgba(7,9,20,0.2)"
   }
 });
