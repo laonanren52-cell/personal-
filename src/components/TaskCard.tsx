@@ -1,7 +1,7 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import { Alert, Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
+import { AppIcon } from "@/components/AppIcon";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { categoryLabels, colors, gradients, priorityColors, priorityGlowColors, priorityLabels, radius, shadow } from "@/constants/theme";
 import { Task } from "@/types/task";
@@ -103,7 +103,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
       <View style={styles.header}>
         <Animated.View style={{ transform: [{ scale: checkScale }] }}>
           <Pressable style={[styles.check, task.completed && styles.checked]} onPress={toggle}>
-            {task.completed ? <Feather name="check" size={15} color={colors.white} /> : null}
+            {task.completed ? <AppIcon name="check" size={15} color={colors.white} /> : null}
           </Pressable>
         </Animated.View>
 
@@ -113,7 +113,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
               {task.title}
             </Text>
             <Pressable style={styles.deleteButton} onPress={deleteWithConfirm}>
-              <Feather name="trash-2" size={14} color={colors.coral} />
+              <AppIcon name="trash" size={14} color={colors.coral} />
             </Pressable>
           </View>
           <View style={styles.metaRow}>
@@ -126,7 +126,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
 
       <View style={styles.tagRow}>
         <View style={[styles.deadlinePill, { borderColor: `${priorityColor}66` }]}>
-          <Feather name="clock" size={12} color={priorityColor} />
+          <AppIcon name="clock" size={12} color={priorityColor} />
           <Text style={[styles.deadlineText, { color: priorityColor }]}>{formatDeadline(task.deadline)}</Text>
         </View>
         <View style={[styles.priorityTag, { borderColor: priorityColor, backgroundColor: `${priorityColor}20` }]}>
@@ -139,7 +139,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
 
       <LinearGradient colors={gradients.cyanGlass} style={styles.adviceBox}>
         <View style={styles.sparkBox}>
-          <Feather name="zap" size={14} color={colors.mint} />
+          <AppIcon name="zap" size={14} color={colors.mint} accent={colors.mint} />
         </View>
         <Text style={styles.advice} numberOfLines={2}>
           {task.aiAdvice}
@@ -213,9 +213,9 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     color: colors.text,
-    fontSize: 16,
-    lineHeight: 22,
-    fontWeight: "900",
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: "800",
     letterSpacing: 0
   },
   doneText: {

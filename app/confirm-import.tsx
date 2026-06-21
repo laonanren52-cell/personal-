@@ -1,9 +1,9 @@
-import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { AppIcon } from "@/components/AppIcon";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText, PageTitle } from "@/components/Typography";
@@ -72,7 +72,7 @@ export default function ConfirmImportScreen() {
       <MobilePageContainer>
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => router.back()}>
-          <Feather name="chevron-left" size={22} color={colors.text} />
+          <AppIcon name="chevronLeft" size={22} color={colors.text} />
         </TouchableOpacity>
         <View style={styles.headerText}>
           <MutedText>确认导入</MutedText>

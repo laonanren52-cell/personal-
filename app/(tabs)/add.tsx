@@ -1,10 +1,10 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { PropsWithChildren, useRef, useState } from "react";
 import { Alert, Animated, Pressable, StyleProp, StyleSheet, Switch, Text, TextInput, View, ViewStyle } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { AppIcon } from "@/components/AppIcon";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText, SectionTitle } from "@/components/Typography";
@@ -98,16 +98,16 @@ export default function AddScreen() {
     <AnimatedGlassScreen>
       <MobilePageContainer>
         <MutedText>新任务</MutedText>
-        <Text style={styles.title}>把事情丢给序光</Text>
+        <Text style={styles.title}>先把事情记下来</Text>
 
         <AnimatedCard delay={80} contentStyle={styles.group}>
           <View style={styles.groupHeader}>
             <View style={styles.headerIcon}>
-              <Feather name="file-text" size={17} color={colors.primary} />
+              <AppIcon name="file" size={17} color={colors.primary} />
             </View>
             <View style={styles.headerCopy}>
               <SectionTitle style={styles.groupTitle}>核心信息</SectionTitle>
-              <MutedText>先把任务本身说清楚</MutedText>
+              <MutedText>写清楚任务，序光会自动判断轻重缓急</MutedText>
             </View>
           </View>
           <Field label="任务标题" value={title} onChangeText={setTitle} placeholder="例如：提交蓝桥杯资料" />
@@ -125,7 +125,7 @@ export default function AddScreen() {
         <AnimatedCard delay={160} contentStyle={styles.group}>
           <View style={styles.groupHeader}>
             <View style={styles.headerIcon}>
-              <Feather name="zap" size={17} color={colors.primary} />
+              <AppIcon name="zap" size={17} color={colors.primary} accent={colors.mint} />
             </View>
             <View style={styles.headerCopy}>
               <SectionTitle style={styles.groupTitle}>任务属性</SectionTitle>
@@ -278,9 +278,9 @@ function CategoryPill({ active, label, onPress }: { active: boolean; label: stri
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
-    fontSize: 28,
-    lineHeight: 35,
-    fontWeight: "900",
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: "800",
     letterSpacing: 0,
     marginBottom: 18
   },
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 2,
-    marginBottom: 8,
+    marginBottom: 18,
     borderRadius: 22,
     backgroundColor: "rgba(255,255,255,0.48)"
   }

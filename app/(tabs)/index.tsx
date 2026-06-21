@@ -1,11 +1,11 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { StyleSheet, Text, Pressable, View } from "react-native";
+import { AppIcon } from "@/components/AppIcon";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
-import { BrandMark } from "@/components/BrandMark";
+import { BrandLogo } from "@/components/BrandLogo";
 import { FloatingEmptyState } from "@/components/FloatingEmptyState";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { TaskCard } from "@/components/TaskCard";
@@ -60,10 +60,10 @@ export default function HomeScreen() {
       <MobilePageContainer>
       <View style={styles.topRow}>
         <View style={styles.titleBlock}>
-          <BrandMark showName subtitle="让事情自己排好队" />
+          <BrandLogo showName subtitle="让事情自己排好队" />
         </View>
         <Pressable style={styles.refresh} onPress={refreshPriorities}>
-          <Feather name="refresh-cw" size={17} color={colors.text} />
+          <AppIcon name="refresh" size={17} color={colors.text} />
         </Pressable>
       </View>
 
@@ -96,7 +96,7 @@ export default function HomeScreen() {
         </View>
 
         <LinearGradient colors={gradients.cyanGlass} style={styles.aiTip}>
-          <Feather name="zap" size={16} color={colors.mint} />
+          <AppIcon name="zap" size={16} color={colors.mint} accent={colors.mint} />
           <Text style={styles.aiTipText} numberOfLines={2}>
             {overview.aiSuggestion}
           </Text>
@@ -205,9 +205,9 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     color: colors.text,
-    fontSize: 23,
-    lineHeight: 29,
-    fontWeight: "900",
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: "800",
     letterSpacing: 0,
     marginBottom: 6
   },

@@ -29,14 +29,14 @@ export function MutedText({ children, style, ...props }: PropsWithChildren<TextP
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
-    fontSize: 28,
-    lineHeight: 35,
-    fontWeight: "900",
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: "800",
     letterSpacing: 0
   },
   section: {
     color: colors.text,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "800",
     letterSpacing: 0
   },

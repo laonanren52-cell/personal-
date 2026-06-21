@@ -1,9 +1,9 @@
-import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
-import { BrandMark } from "@/components/BrandMark";
+import { AppIcon } from "@/components/AppIcon";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Chip, Field, PrimaryButton } from "@/components/FormControls";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText, PageTitle, SectionTitle } from "@/components/Typography";
@@ -62,8 +62,9 @@ export default function SettingsScreen() {
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
-      <BrandMark showName subtitle="让事情自己排好队" />
-      <PageTitle style={styles.pageTitle}>偏好</PageTitle>
+      <BrandLogo showName subtitle="让事情自己排好队" />
+      <MutedText style={styles.pageKicker}>偏好</MutedText>
+      <PageTitle style={styles.pageTitle}>我的偏好</PageTitle>
 
       <AnimatedCard delay={80} contentStyle={styles.panel}>
         <Field
@@ -101,7 +102,7 @@ export default function SettingsScreen() {
 
       <AnimatedCard delay={160} contentStyle={styles.about}>
         <View style={styles.aboutIcon}>
-          <BrandMark size={28} />
+          <BrandLogo size={28} />
         </View>
         <View style={styles.aboutText}>
           <Text style={styles.aboutTitle}>关于序光</Text>
@@ -116,7 +117,7 @@ export default function SettingsScreen() {
         disabled={clearing}
         onPress={confirmClearTasks}
       >
-        <Feather name="trash-2" size={17} color={colors.coral} />
+        <AppIcon name="trash" size={17} color={colors.coral} />
         <Text style={styles.dangerText}>{clearing ? "正在清空..." : "清空所有任务"}</Text>
       </TouchableOpacity>
       </MobilePageContainer>
@@ -126,6 +127,10 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   pageTitle: {
+    marginTop: 2,
+    marginBottom: 2
+  },
+  pageKicker: {
     marginTop: 16
   },
   panel: {

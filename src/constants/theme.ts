@@ -85,14 +85,14 @@ export const shadow = {
 
 export const typography = {
   title: {
-    fontSize: 28,
-    lineHeight: 35,
-    fontWeight: "900" as const,
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: "800" as const,
     letterSpacing: 0
   },
   section: {
-    fontSize: 18,
-    lineHeight: 24,
+    fontSize: 17,
+    lineHeight: 23,
     fontWeight: "800" as const,
     letterSpacing: 0
   },

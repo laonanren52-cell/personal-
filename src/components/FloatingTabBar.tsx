@@ -1,17 +1,17 @@
-import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import { Animated, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { AppIcon, AppIconName } from "@/components/AppIcon";
 import { colors, gradients, radius, shadow } from "@/constants/theme";
 
 const iconMap = {
   index: "home",
-  add: "plus-circle",
+  add: "plus",
   import: "camera",
   planner: "calendar",
   settings: "settings"
-} as const;
+} satisfies Record<string, AppIconName>;
 
 export function FloatingTabBar({ state, descriptors, navigation }: any) {
   return (
@@ -66,7 +66,7 @@ function TabItem({
 }: {
   label: string;
   focused: boolean;
-  iconName: keyof typeof Feather.glyphMap;
+  iconName: AppIconName;
   onPress: () => void;
 }) {
   const scale = useRef(new Animated.Value(focused ? 1 : 0.92)).current;
@@ -86,7 +86,7 @@ function TabItem({
         {focused ? (
           <LinearGradient colors={gradients.primaryButton} style={styles.activeFill} />
         ) : null}
-        <Feather name={iconName} size={20} color={focused ? colors.white : colors.textMuted} />
+        <AppIcon name={iconName} size={20} color={focused ? colors.white : colors.textMuted} accent={colors.mint} />
         <Text style={[styles.label, focused && styles.labelActive]} numberOfLines={1}>
           {label}
         </Text>

@@ -1,9 +1,9 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { AppIcon } from "@/components/AppIcon";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText } from "@/components/Typography";
 import { colors, gradients, radius } from "@/constants/theme";
@@ -24,15 +24,15 @@ export default function PlannerScreen() {
     <AnimatedGlassScreen>
       <MobilePageContainer>
       <MutedText>今日节奏</MutedText>
-      <Text style={styles.title}>今天怎么安排？</Text>
+      <Text style={styles.title}>今天怎么排？</Text>
 
       <AnimatedCard delay={80} colorsOverride={gradients.hero} contentStyle={styles.summary}>
         <View style={styles.summaryIcon}>
-          <Feather name="calendar" size={22} color={colors.mint} />
+          <AppIcon name="calendar" size={22} color={colors.mint} accent={colors.mint} />
         </View>
         <View style={styles.summaryText}>
           <Text style={styles.summaryTitle}>{summary}</Text>
-          <MutedText>基于 {activeTasks.length} 个未完成任务，优先安排高分、临近截止和耗时较长的事项。</MutedText>
+          <MutedText>根据任务截止时间和优先级，帮你安排上午、下午和晚上。</MutedText>
         </View>
       </AnimatedCard>
 
@@ -51,7 +51,7 @@ export default function PlannerScreen() {
                   <AnimatedCard key={`${section.slot}-${index}`} delay={140 + sectionIndex * 110 + index * 60} contentStyle={styles.planItem}>
                     <View style={[styles.alertDot, isWarning && styles.alertDotHot]} />
                     <Text style={styles.planText}>{item}</Text>
-                    {isWarning ? <Feather name="alert-circle" size={17} color={colors.coral} /> : null}
+                    {isWarning ? <AppIcon name="alert" size={17} color={colors.coral} /> : null}
                   </AnimatedCard>
                 );
               })}
@@ -67,9 +67,9 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
-    fontSize: 28,
-    lineHeight: 35,
-    fontWeight: "900",
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: "800",
     letterSpacing: 0,
     marginBottom: 18
   },

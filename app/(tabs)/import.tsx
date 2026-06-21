@@ -1,4 +1,3 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -6,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Animated, Easing, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { AnimatedGlassScreen } from "@/components/AnimatedGlassScreen";
+import { AppIcon, AppIconName } from "@/components/AppIcon";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { MutedText } from "@/components/Typography";
 import { colors, gradients, radius, shadow } from "@/constants/theme";
@@ -96,12 +96,13 @@ export default function ImportScreen() {
     <AnimatedGlassScreen>
       <MobilePageContainer>
       <MutedText>截图识别</MutedText>
-      <Text style={styles.title}>从截图、通知、聊天记录中提取待办</Text>
+      <Text style={styles.title}>截图变任务</Text>
+      <MutedText style={styles.subtitle}>从通知、聊天记录、截图中提取待办</MutedText>
 
       <AnimatedCard delay={80} contentStyle={styles.scanPanel}>
         <View style={styles.scanWindow}>
           <View style={styles.scanGlow} />
-          <Feather name="camera" size={64} color={colors.mint} />
+          <AppIcon name="scan" size={70} color={colors.mint} accent={colors.primary} />
           <Animated.View
             style={[
               styles.scanLine,
@@ -146,7 +147,7 @@ function ActionButton({
   onPress,
   disabled
 }: {
-  icon: keyof typeof Feather.glyphMap;
+  icon: AppIconName;
   label: string;
   onPress: () => void;
   disabled?: boolean;
@@ -154,7 +155,7 @@ function ActionButton({
   return (
     <Pressable onPress={onPress} disabled={disabled} style={disabled && styles.disabled}>
       <LinearGradient colors={gradients.primaryButton} style={styles.actionButton}>
-        <Feather name={icon} size={19} color={colors.white} />
+        <AppIcon name={icon} size={19} color={colors.white} accent={colors.mint} />
         <Text style={styles.actionText}>{label}</Text>
       </LinearGradient>
     </Pressable>
@@ -171,10 +172,13 @@ function getStatusText(status: ImportStatus) {
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
-    fontSize: 27,
-    lineHeight: 34,
-    fontWeight: "900",
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: "800",
     letterSpacing: 0,
+    marginBottom: 6
+  },
+  subtitle: {
     marginBottom: 18
   },
   scanPanel: {
@@ -254,8 +258,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    paddingHorizontal: 22,
-    height: 52,
+    paddingHorizontal: 18,
+    height: 48,
     borderRadius: 18,
     ...shadow.glow
   },

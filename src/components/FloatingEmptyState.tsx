@@ -1,7 +1,7 @@
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
+import { AppIcon } from "@/components/AppIcon";
 import { PrimaryButton } from "@/components/FormControls";
 import { MutedText } from "@/components/Typography";
 import { colors, gradients, radius, shadow } from "@/constants/theme";
@@ -49,13 +49,13 @@ export function FloatingEmptyState({ onAction }: Props) {
         ]}
       >
         <LinearGradient colors={gradients.primaryButton} style={styles.iconCircle}>
-          <Feather name="zap" size={34} color={colors.white} />
+          <AppIcon name="zap" size={34} color={colors.white} accent={colors.mint} />
         </LinearGradient>
       </Animated.View>
       <Text style={styles.emptyTitle}>还没有任务</Text>
       <MutedText style={styles.emptyCopy}>添加任务后，序光会自动帮你安排优先级</MutedText>
       <View style={styles.actionWrap}>
-        <PrimaryButton onPress={onAction}>立即添加任务</PrimaryButton>
+        <PrimaryButton onPress={onAction}>添加第一个任务</PrimaryButton>
       </View>
     </LinearGradient>
   );
