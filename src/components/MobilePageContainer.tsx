@@ -8,7 +8,7 @@ export function MobilePageContainer({ children }: PropsWithChildren) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    maxWidth: 460,
+    maxWidth: 440,
     alignSelf: "center",
     paddingHorizontal: 16
   }

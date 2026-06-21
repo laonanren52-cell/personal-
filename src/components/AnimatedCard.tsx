@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
     ...shadow.glow
   },
   hovered: {
-    borderColor: "rgba(79,124,255,0.34)"
+    borderColor: "rgba(91,124,255,0.28)"
   }
 });

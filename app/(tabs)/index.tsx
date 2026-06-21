@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
@@ -10,7 +10,7 @@ import { FloatingEmptyState } from "@/components/FloatingEmptyState";
 import { MobilePageContainer } from "@/components/MobilePageContainer";
 import { TaskCard } from "@/components/TaskCard";
 import { MutedText, SectionTitle } from "@/components/Typography";
-import { colors, gradients, priorityColors, radius, shadow } from "@/constants/theme";
+import { colors, gradients, radius, shadow } from "@/constants/theme";
 import { useTasks } from "@/context/TaskContext";
 import { TaskQuadrant } from "@/types/task";
 import { formatDeadline, isToday } from "@/utils/date";
@@ -48,17 +48,22 @@ export default function HomeScreen() {
   }, [tasks]);
 
   const visibleTasks = filter === "全部" ? tasks : tasks.filter((task) => task.quadrant === filter);
-  const pressureColor = overview.inThreeDaysHigh > 0 ? colors.red : colors.green;
+  const rhythm =
+    overview.pressure >= 70
+      ? { label: "紧张", color: colors.coral, bg: "rgba(255,92,122,0.10)" }
+      : overview.pressure >= 36
+        ? { label: "适中", color: colors.yellow, bg: "rgba(245,158,11,0.12)" }
+        : { label: "轻", color: colors.mint, bg: "rgba(38,198,218,0.12)" };
 
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
       <View style={styles.topRow}>
         <View style={styles.titleBlock}>
-          <BrandMark showName subtitle="让每件事都有轻重先后" />
+          <BrandMark showName subtitle="让事情自己排好队" />
         </View>
         <Pressable style={styles.refresh} onPress={refreshPriorities}>
-          <Ionicons name="refresh" size={18} color={colors.text} />
+          <Feather name="refresh-cw" size={17} color={colors.text} />
         </Pressable>
       </View>
 
@@ -66,23 +71,19 @@ export default function HomeScreen() {
         <View style={styles.heroGlow} />
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
-            <Text style={styles.heroTitle}>序光今日指挥中心</Text>
-            <MutedText>根据截止时间、重要程度和任务类型自动排序</MutedText>
+            <Text style={styles.heroTitle}>今天先做什么？</Text>
+            <MutedText>序光已按截止时间和重要程度帮你排好顺序</MutedText>
           </View>
-          <View style={[styles.pressureBadge, { borderColor: `${pressureColor}66` }]}>
-            <Text style={[styles.pressureNumber, { color: pressureColor }]}>{overview.pressure}</Text>
-            <Text style={styles.pressureLabel}>压力指数</Text>
+          <View style={[styles.rhythmBadge, { borderColor: rhythm.color, backgroundColor: rhythm.bg }]}>
+            <Text style={[styles.rhythmValue, { color: rhythm.color }]}>{rhythm.label}</Text>
+            <Text style={styles.rhythmLabel}>今日节奏</Text>
           </View>
-        </View>
-
-        <View style={styles.pressureTrack}>
-          <View style={[styles.pressureFill, { width: `${overview.pressure}%`, backgroundColor: pressureColor }]} />
         </View>
 
         <View style={styles.metricGrid}>
           <MetricBlock label="今日待完成" value={overview.todayCount} accent={colors.cyan} />
           <MetricBlock
-            label="3天高优先"
+            label="3天内优先"
             value={overview.inThreeDaysHigh}
             accent={overview.inThreeDaysHigh ? colors.red : colors.green}
           />
@@ -95,7 +96,7 @@ export default function HomeScreen() {
         </View>
 
         <LinearGradient colors={gradients.cyanGlass} style={styles.aiTip}>
-          <Ionicons name="sparkles-outline" size={16} color={colors.cyan} />
+          <Feather name="zap" size={16} color={colors.mint} />
           <Text style={styles.aiTipText} numberOfLines={2}>
             {overview.aiSuggestion}
           </Text>
@@ -103,7 +104,7 @@ export default function HomeScreen() {
       </AnimatedCard>
 
       <View style={styles.sectionHeader}>
-        <SectionTitle>任务看板</SectionTitle>
+        <SectionTitle>我的任务</SectionTitle>
         <Text style={styles.countText}>{overview.active.length} 个待办</Text>
       </View>
 
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: 85,
     right: -56,
     top: -48,
-    backgroundColor: "rgba(79,124,255,0.13)"
+    backgroundColor: "rgba(91,124,255,0.12)"
   },
   heroTop: {
     flexDirection: "row",
@@ -210,39 +211,26 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     marginBottom: 6
   },
-  pressureBadge: {
-    width: 82,
-    height: 82,
-    borderRadius: 41,
+  rhythmBadge: {
+    minWidth: 82,
+    height: 66,
+    borderRadius: 24,
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.72)"
+    paddingHorizontal: 12
   },
-  pressureNumber: {
-    fontSize: 24,
-    lineHeight: 28,
+  rhythmValue: {
+    fontSize: 18,
+    lineHeight: 23,
     fontWeight: "900",
     letterSpacing: 0
   },
-  pressureLabel: {
+  rhythmLabel: {
     color: colors.muted,
     fontSize: 10,
     fontWeight: "800",
     marginTop: 2
-  },
-  pressureTrack: {
-    height: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(215,226,255,0.82)",
-    overflow: "hidden",
-    marginTop: 18,
-    width: "74%",
-    maxWidth: 250
-  },
-  pressureFill: {
-    height: "100%",
-    borderRadius: 999
   },
   metricGrid: {
     marginTop: 16,
@@ -305,7 +293,7 @@ const styles = StyleSheet.create({
     gap: 9,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "rgba(79,124,255,0.16)",
+    borderColor: "rgba(91,124,255,0.14)",
     padding: 12,
     marginTop: 14
   },
@@ -342,7 +330,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border
   },
   activeFilter: {
-    backgroundColor: "rgba(221,231,255,0.66)",
+    backgroundColor: "rgba(230,236,255,0.72)",
     borderColor: colors.primary,
     ...shadow.glow
   },

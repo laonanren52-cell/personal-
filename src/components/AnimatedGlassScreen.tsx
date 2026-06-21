@@ -152,21 +152,21 @@ const styles = StyleSheet.create({
     height: 260,
     top: -82,
     right: -92,
-    backgroundColor: "rgba(79,124,255,0.18)"
+    backgroundColor: "rgba(91,124,255,0.14)"
   },
   orbTwo: {
     width: 220,
     height: 220,
     top: 184,
     left: -118,
-    backgroundColor: "rgba(139,124,255,0.14)"
+    backgroundColor: "rgba(155,140,255,0.12)"
   },
   orbThree: {
     width: 190,
     height: 190,
     bottom: 120,
     right: -84,
-    backgroundColor: "rgba(34,199,217,0.12)"
+    backgroundColor: "rgba(38,198,218,0.10)"
   },
   vignette: {
     position: "absolute",

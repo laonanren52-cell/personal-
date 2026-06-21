@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -95,13 +95,13 @@ export default function ImportScreen() {
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
-      <MutedText>图片导入</MutedText>
+      <MutedText>截图识别</MutedText>
       <Text style={styles.title}>从截图、通知、聊天记录中提取待办</Text>
 
       <AnimatedCard delay={80} contentStyle={styles.scanPanel}>
         <View style={styles.scanWindow}>
           <View style={styles.scanGlow} />
-          <Ionicons name="scan-outline" size={70} color={colors.cyan} />
+          <Feather name="camera" size={64} color={colors.mint} />
           <Animated.View
             style={[
               styles.scanLine,
@@ -115,7 +115,7 @@ export default function ImportScreen() {
             ]}
           />
         </View>
-        <Text style={styles.scanTitle}>AI 任务扫描</Text>
+        <Text style={styles.scanTitle}>截图变任务</Text>
         <MutedText style={styles.centerText}>选择截图后，系统会先识别文字，再提取可确认的任务。</MutedText>
         <View style={styles.statusRow}>
           {["recognizing", "extracting", "confirming"].map((item) => (
@@ -124,8 +124,8 @@ export default function ImportScreen() {
           <Text style={styles.statusText}>{getStatusText(status)}</Text>
         </View>
         <View style={styles.buttonRow}>
-          <ActionButton icon="camera-outline" label="拍照" onPress={() => pick("camera")} disabled={busy} />
-          <ActionButton icon="images-outline" label="相册" onPress={() => pick("library")} disabled={busy} />
+          <ActionButton icon="camera" label="拍照" onPress={() => pick("camera")} disabled={busy} />
+          <ActionButton icon="image" label="相册" onPress={() => pick("library")} disabled={busy} />
         </View>
       </AnimatedCard>
 
@@ -146,7 +146,7 @@ function ActionButton({
   onPress,
   disabled
 }: {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: keyof typeof Feather.glyphMap;
   label: string;
   onPress: () => void;
   disabled?: boolean;
@@ -154,7 +154,7 @@ function ActionButton({
   return (
     <Pressable onPress={onPress} disabled={disabled} style={disabled && styles.disabled}>
       <LinearGradient colors={gradients.primaryButton} style={styles.actionButton}>
-        <Ionicons name={icon} size={20} color={colors.white} />
+        <Feather name={icon} size={19} color={colors.white} />
         <Text style={styles.actionText}>{label}</Text>
       </LinearGradient>
     </Pressable>
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     height: 190,
     borderRadius: radius.xl,
     borderWidth: 1,
-    borderColor: "rgba(34,199,217,0.20)",
+    borderColor: "rgba(38,198,218,0.18)",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(255,255,255,0.58)",
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     width: 170,
     height: 170,
     borderRadius: 85,
-    backgroundColor: "rgba(34,199,217,0.12)"
+    backgroundColor: "rgba(38,198,218,0.10)"
   },
   scanLine: {
     position: "absolute",

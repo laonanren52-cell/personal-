@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
@@ -72,7 +72,7 @@ export default function ConfirmImportScreen() {
       <MobilePageContainer>
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={22} color={colors.text} />
+          <Feather name="chevron-left" size={22} color={colors.text} />
         </TouchableOpacity>
         <View style={styles.headerText}>
           <MutedText>确认导入</MutedText>
@@ -119,7 +119,7 @@ export default function ConfirmImportScreen() {
         ))
       ) : (
         <AnimatedCard contentStyle={styles.empty}>
-          <Text style={styles.emptyText}>暂无待确认任务，请先从图片导入页识别。</Text>
+          <Text style={styles.emptyText}>暂无待确认任务，请先从截图识别页导入。</Text>
         </AnimatedCard>
       )}
 

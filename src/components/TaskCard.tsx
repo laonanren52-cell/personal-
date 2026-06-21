@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import { Alert, Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
@@ -103,7 +103,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
       <View style={styles.header}>
         <Animated.View style={{ transform: [{ scale: checkScale }] }}>
           <Pressable style={[styles.check, task.completed && styles.checked]} onPress={toggle}>
-            {task.completed ? <Ionicons name="checkmark" size={16} color={colors.white} /> : null}
+            {task.completed ? <Feather name="check" size={15} color={colors.white} /> : null}
           </Pressable>
         </Animated.View>
 
@@ -113,7 +113,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
               {task.title}
             </Text>
             <Pressable style={styles.deleteButton} onPress={deleteWithConfirm}>
-              <Ionicons name="trash-outline" size={15} color={colors.red} />
+              <Feather name="trash-2" size={14} color={colors.coral} />
             </Pressable>
           </View>
           <View style={styles.metaRow}>
@@ -126,7 +126,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
 
       <View style={styles.tagRow}>
         <View style={[styles.deadlinePill, { borderColor: `${priorityColor}66` }]}>
-          <Ionicons name="time-outline" size={13} color={priorityColor} />
+          <Feather name="clock" size={12} color={priorityColor} />
           <Text style={[styles.deadlineText, { color: priorityColor }]}>{formatDeadline(task.deadline)}</Text>
         </View>
         <View style={[styles.priorityTag, { borderColor: priorityColor, backgroundColor: `${priorityColor}20` }]}>
@@ -139,7 +139,7 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
 
       <LinearGradient colors={gradients.cyanGlass} style={styles.adviceBox}>
         <View style={styles.sparkBox}>
-          <Ionicons name="sparkles-outline" size={15} color={colors.cyan} />
+          <Feather name="zap" size={14} color={colors.mint} />
         </View>
         <Text style={styles.advice} numberOfLines={2}>
           {task.aiAdvice}
@@ -153,10 +153,11 @@ export function TaskCard({ task, index = 0, onToggle, onDelete }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    minHeight: 156,
+    minHeight: 150,
     padding: 16,
     marginBottom: 12,
-    position: "relative"
+    position: "relative",
+    borderRadius: 24
   },
   completedCard: {
     opacity: 0.62
@@ -227,7 +228,9 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.62)"
+    backgroundColor: "rgba(255,92,122,0.07)",
+    borderWidth: 1,
+    borderColor: "rgba(255,92,122,0.12)"
   },
   metaRow: {
     flexDirection: "row",
@@ -264,7 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: "rgba(255,255,255,0.66)"
+    backgroundColor: "rgba(255,255,255,0.78)"
   },
   deadlineText: {
     fontSize: 11,
@@ -286,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: "rgba(221,231,255,0.52)"
+    backgroundColor: "rgba(230,236,255,0.64)"
   },
   quadrantText: {
     color: colors.text,
@@ -302,7 +305,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "rgba(79,124,255,0.16)"
+    borderColor: "rgba(91,124,255,0.14)"
   },
   sparkBox: {
     width: 26,
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(34,199,217,0.10)"
+    backgroundColor: "rgba(38,198,218,0.10)"
   },
   advice: {
     flex: 1,

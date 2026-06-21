@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -23,12 +23,12 @@ export default function PlannerScreen() {
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
-      <MutedText>序光规划</MutedText>
-      <Text style={styles.title}>今日作战计划</Text>
+      <MutedText>今日节奏</MutedText>
+      <Text style={styles.title}>今天怎么安排？</Text>
 
       <AnimatedCard delay={80} colorsOverride={gradients.hero} contentStyle={styles.summary}>
         <View style={styles.summaryIcon}>
-          <Ionicons name="sparkles-outline" size={24} color={colors.cyan} />
+          <Feather name="calendar" size={22} color={colors.mint} />
         </View>
         <View style={styles.summaryText}>
           <Text style={styles.summaryTitle}>{summary}</Text>
@@ -51,7 +51,7 @@ export default function PlannerScreen() {
                   <AnimatedCard key={`${section.slot}-${index}`} delay={140 + sectionIndex * 110 + index * 60} contentStyle={styles.planItem}>
                     <View style={[styles.alertDot, isWarning && styles.alertDotHot]} />
                     <Text style={styles.planText}>{item}</Text>
-                    {isWarning ? <Ionicons name="alert-circle-outline" size={18} color={colors.red} /> : null}
+                    {isWarning ? <Feather name="alert-circle" size={17} color={colors.coral} /> : null}
                   </AnimatedCard>
                 );
               })}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(34,199,217,0.10)"
+    backgroundColor: "rgba(38,198,218,0.10)"
   },
   summaryText: {
     flex: 1

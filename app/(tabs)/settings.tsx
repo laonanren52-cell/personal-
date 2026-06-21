@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { AnimatedCard } from "@/components/AnimatedCard";
@@ -62,8 +62,8 @@ export default function SettingsScreen() {
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
-      <BrandMark showName subtitle="让每件事都有轻重先后" />
-      <PageTitle style={styles.pageTitle}>真实 AI 与提醒偏好</PageTitle>
+      <BrandMark showName subtitle="让事情自己排好队" />
+      <PageTitle style={styles.pageTitle}>偏好</PageTitle>
 
       <AnimatedCard delay={80} contentStyle={styles.panel}>
         <Field
@@ -116,7 +116,7 @@ export default function SettingsScreen() {
         disabled={clearing}
         onPress={confirmClearTasks}
       >
-        <Ionicons name="trash-outline" size={18} color={colors.red} />
+        <Feather name="trash-2" size={17} color={colors.coral} />
         <Text style={styles.dangerText}>{clearing ? "正在清空..." : "清空所有任务"}</Text>
       </TouchableOpacity>
       </MobilePageContainer>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(79,124,255,0.10)"
+    backgroundColor: "rgba(91,124,255,0.10)"
   },
   aboutText: {
     flex: 1
@@ -193,15 +193,15 @@ const styles = StyleSheet.create({
     minHeight: 52,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(239,68,68,0.24)",
-    backgroundColor: "rgba(239,68,68,0.08)",
+    borderColor: "rgba(255,92,122,0.24)",
+    backgroundColor: "rgba(255,92,122,0.08)",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8
   },
   dangerText: {
-    color: colors.red,
+    color: colors.coral,
     fontSize: 14,
     fontWeight: "900"
   }

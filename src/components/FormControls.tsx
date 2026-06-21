@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.62)"
   },
   activeChip: {
-    backgroundColor: "rgba(221,231,255,0.86)",
+    backgroundColor: "rgba(230,236,255,0.86)",
     borderColor: colors.primary
   },
   chipText: {

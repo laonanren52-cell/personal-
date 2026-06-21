@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
@@ -49,7 +49,7 @@ export function FloatingEmptyState({ onAction }: Props) {
         ]}
       >
         <LinearGradient colors={gradients.primaryButton} style={styles.iconCircle}>
-          <Ionicons name="sparkles-outline" size={38} color={colors.white} />
+          <Feather name="zap" size={34} color={colors.white} />
         </LinearGradient>
       </Animated.View>
       <Text style={styles.emptyTitle}>还没有任务</Text>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 47,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(34,199,217,0.10)",
+    backgroundColor: "rgba(38,198,218,0.10)",
     marginBottom: 18,
     ...shadow.cyan
   },

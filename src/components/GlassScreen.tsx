@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     width: 240,
     height: 240,
     borderRadius: 120,
-    backgroundColor: "rgba(79,124,255,0.14)",
+    backgroundColor: "rgba(91,124,255,0.12)",
     top: -70,
     right: -80
   },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     borderRadius: 90,
-    backgroundColor: "rgba(34,199,217,0.10)",
+    backgroundColor: "rgba(38,198,218,0.09)",
     top: 170,
     left: -90
   }

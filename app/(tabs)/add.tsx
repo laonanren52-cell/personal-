@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { PropsWithChildren, useRef, useState } from "react";
@@ -21,10 +21,10 @@ const offsetOptions = [
 ];
 const importanceOptions = [
   { value: 1, label: "轻松", color: colors.green, soft: "rgba(34,197,94,0.12)", description: "不影响整体安排，有空再做。" },
-  { value: 2, label: "普通", color: colors.cyan, soft: "rgba(34,199,217,0.12)", description: "正常安排即可，不需要立即处理。" },
-  { value: 3, label: "重要", color: colors.primary, soft: "rgba(79,124,255,0.12)", description: "建议今天或明天安排时间推进。" },
+  { value: 2, label: "普通", color: colors.mint, soft: "rgba(38,198,218,0.12)", description: "正常安排即可，不需要立即处理。" },
+  { value: 3, label: "重要", color: colors.primary, soft: "rgba(91,124,255,0.12)", description: "建议今天或明天安排时间推进。" },
   { value: 4, label: "紧急", color: colors.yellow, soft: "rgba(245,158,11,0.14)", description: "需要优先处理，建议尽快完成。" },
-  { value: 5, label: "最高", color: colors.red, soft: "rgba(239,68,68,0.12)", description: "最高优先级，AI 会将它排在前面并提前提醒。" }
+  { value: 5, label: "最高", color: colors.coral, soft: "rgba(255,92,122,0.12)", description: "最高优先级，AI 会将它排在前面并提前提醒。" }
 ] as const;
 
 export default function AddScreen() {
@@ -97,13 +97,13 @@ export default function AddScreen() {
   return (
     <AnimatedGlassScreen>
       <MobilePageContainer>
-        <MutedText>新建任务</MutedText>
-        <Text style={styles.title}>让 AI 先判断轻重缓急</Text>
+        <MutedText>新任务</MutedText>
+        <Text style={styles.title}>把事情丢给序光</Text>
 
         <AnimatedCard delay={80} contentStyle={styles.group}>
           <View style={styles.groupHeader}>
             <View style={styles.headerIcon}>
-              <Ionicons name="document-text-outline" size={18} color={colors.primary} />
+              <Feather name="file-text" size={17} color={colors.primary} />
             </View>
             <View style={styles.headerCopy}>
               <SectionTitle style={styles.groupTitle}>核心信息</SectionTitle>
@@ -125,7 +125,7 @@ export default function AddScreen() {
         <AnimatedCard delay={160} contentStyle={styles.group}>
           <View style={styles.groupHeader}>
             <View style={styles.headerIcon}>
-              <Ionicons name="sparkles-outline" size={18} color={colors.primary} />
+              <Feather name="zap" size={17} color={colors.primary} />
             </View>
             <View style={styles.headerCopy}>
               <SectionTitle style={styles.groupTitle}>任务属性</SectionTitle>
@@ -303,9 +303,9 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(79,124,255,0.10)",
+    backgroundColor: "rgba(91,124,255,0.10)",
     borderWidth: 1,
-    borderColor: "rgba(79,124,255,0.16)"
+    borderColor: "rgba(91,124,255,0.16)"
   },
   headerCopy: {
     flex: 1
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   categoryPillActive: {
-    borderColor: "rgba(79,124,255,0.12)"
+    borderColor: "rgba(91,124,255,0.12)"
   },
   categoryText: {
     color: colors.muted,
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 6,
     borderRadius: 22,
-    backgroundColor: "rgba(221,231,255,0.42)"
+    backgroundColor: "rgba(230,236,255,0.54)"
   },
   footer: {
     marginTop: 2,

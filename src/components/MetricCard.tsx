@@ -10,7 +10,7 @@ type Props = {
 
 export function MetricCard({ label, value, accent = colors.primary }: Props) {
   return (
-    <LinearGradient colors={["rgba(255,255,255,0.11)", "rgba(255,255,255,0.045)"]} style={styles.card}>
+    <LinearGradient colors={["rgba(255,255,255,0.92)", "rgba(255,255,255,0.72)"]} style={styles.card}>
       <View style={[styles.dot, { backgroundColor: accent }]} />
       <Text style={styles.value} numberOfLines={1}>
         {value}

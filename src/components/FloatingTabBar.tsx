@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
@@ -6,11 +6,11 @@ import { Animated, Platform, Pressable, StyleSheet, Text, View } from "react-nat
 import { colors, gradients, radius, shadow } from "@/constants/theme";
 
 const iconMap = {
-  index: "checkmark-done-circle-outline",
-  add: "add-circle-outline",
-  import: "scan-circle-outline",
-  planner: "git-branch-outline",
-  settings: "options-outline"
+  index: "home",
+  add: "plus-circle",
+  import: "camera",
+  planner: "calendar",
+  settings: "settings"
 } as const;
 
 export function FloatingTabBar({ state, descriptors, navigation }: any) {
@@ -66,7 +66,7 @@ function TabItem({
 }: {
   label: string;
   focused: boolean;
-  iconName: keyof typeof Ionicons.glyphMap;
+  iconName: keyof typeof Feather.glyphMap;
   onPress: () => void;
 }) {
   const scale = useRef(new Animated.Value(focused ? 1 : 0.92)).current;
@@ -86,7 +86,7 @@ function TabItem({
         {focused ? (
           <LinearGradient colors={gradients.primaryButton} style={styles.activeFill} />
         ) : null}
-        <Ionicons name={iconName} size={21} color={focused ? colors.white : colors.primary} />
+        <Feather name={iconName} size={20} color={focused ? colors.white : colors.textMuted} />
         <Text style={[styles.label, focused && styles.labelActive]} numberOfLines={1}>
           {label}
         </Text>
@@ -98,18 +98,21 @@ function TabItem({
 const styles = StyleSheet.create({
   wrap: {
     position: "absolute",
-    left: 14,
-    right: 14,
+    left: 0,
+    right: 0,
     bottom: Platform.OS === "ios" ? 20 : 12,
-    height: 76
+    height: 72,
+    alignItems: "center"
   },
   blur: {
     flex: 1,
-    borderRadius: 30,
+    width: "92%",
+    maxWidth: 440,
+    borderRadius: 28,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: colors.borderStrong,
-    backgroundColor: "rgba(255,255,255,0.82)",
+    backgroundColor: "rgba(255,255,255,0.86)",
     ...shadow.glow
   },
   bar: {
@@ -126,16 +129,16 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   itemInner: {
-    minHeight: 48,
-    minWidth: 50,
-    maxWidth: 78,
+    minHeight: 46,
+    minWidth: 48,
+    maxWidth: 74,
     borderRadius: radius.pill,
     alignItems: "center",
     justifyContent: "center",
     gap: 2,
     paddingHorizontal: 10,
     overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.40)"
+    backgroundColor: "transparent"
   },
   itemActive: {
     borderWidth: 1,

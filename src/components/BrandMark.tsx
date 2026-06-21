@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View } from "react-native";
 import { colors, gradients } from "@/constants/theme";
@@ -17,7 +17,7 @@ export function BrandMark({ size = 42, showName = false, subtitle }: Props) {
         <View style={styles.pathLine} />
         <View style={styles.dotOne} />
         <View style={styles.dotTwo} />
-        <Ionicons name="checkmark-done" size={iconSize} color={colors.white} />
+        <Feather name="check-circle" size={iconSize} color={colors.white} />
       </LinearGradient>
       {showName ? (
         <View style={styles.copy}>
